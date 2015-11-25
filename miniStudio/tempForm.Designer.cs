@@ -28,57 +28,52 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
-            "fe ",
-            "b"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("fe");
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.userGrid1 = new miniStudio.UserGrid();
             this.SuspendLayout();
             // 
-            // listView1
+            // textBox1
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2});
-            this.listView1.GridLines = true;
-            this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2});
-            this.listView1.LabelEdit = true;
-            this.listView1.Location = new System.Drawing.Point(100, 142);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(321, 192);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.textBox1.Location = new System.Drawing.Point(32, 292);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 21);
+            this.textBox1.TabIndex = 1;
             // 
-            // columnHeader1
+            // userGrid1
             // 
-            this.columnHeader1.Text = "a";
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "b";
+            this.userGrid1.Colnumber = 6;
+            this.userGrid1.Location = new System.Drawing.Point(32, 41);
+            this.userGrid1.Name = "userGrid1";
+            this.userGrid1.Rownumber = 10;
+            this.userGrid1.Size = new System.Drawing.Size(402, 192);
+            this.userGrid1.TabIndex = 2;
             // 
             // tempForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(472, 418);
-            this.Controls.Add(this.listView1);
+            this.ClientSize = new System.Drawing.Size(497, 373);
+            this.Controls.Add(this.userGrid1);
+            this.Controls.Add(this.textBox1);
             this.Name = "tempForm";
-            this.Text = "tempForm";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.TextBox textBox1;
+        private UserGrid userGrid1;
+
+       
+
+
+
+
+
+
+
+
+
 
     }
 }

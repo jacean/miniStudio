@@ -14,6 +14,19 @@ namespace miniStudio
         public tempForm()
         {
             InitializeComponent();
+
         }
+        
+
+        private void tempForm_Load(object sender, EventArgs e)
+        {
+   
+        }
+
+        private void userGrid1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
     }
 }
