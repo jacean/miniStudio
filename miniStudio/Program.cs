@@ -15,7 +15,7 @@ namespace miniStudio
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new tempForm());
+            Application.Run(new mainForm());
         }
     }
 }

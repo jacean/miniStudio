@@ -16,6 +16,9 @@ namespace miniStudio
         {
             InitializeComponent();
             
+            this.tableLayoutPanel1.Size = textBox1.Size;
+            groupBox1.Width = tableLayoutPanel1.Width;
+            this.Size = groupBox1.Size;            
         }
 
         [Browsable(true)]
@@ -37,7 +40,7 @@ namespace miniStudio
                     //如果直接设置会提示属性无效
                     for (int i = 0; i < value - _num; i++)
                     {
-                        this.tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+                        this.tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
                     }
                 }
                 this.tableLayoutPanel1.ColumnCount=value;
@@ -57,7 +60,7 @@ namespace miniStudio
                         //如果直接设置会提示属性无效
                         for (int i = 0; i < value-_num; i++)
                         {
-                            this.tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+                            this.tableLayoutPanel1.RowStyles.Add(new RowStyle());
                         }  
                     }
                     this.tableLayoutPanel1.RowCount = value;
@@ -147,5 +150,12 @@ namespace miniStudio
         //        mouseDoubleClick(sender, new EventArgs());//把按钮自身作为参数传递
         //}
         #endregion
+
+   
+
+        private void UserGrid_SizeChanged(object sender, EventArgs e)
+        {
+            setTableLayout(this.tableLayoutPanel1);
+        }
     }
 }

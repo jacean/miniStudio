@@ -10,11 +10,16 @@ using System.Windows.Forms;
 namespace miniStudio
 {
     [DefaultEvent("Click")]
-    public partial class UserLabel : UserControl
+    public partial class UserGridIcon : UserControl
     {
-        public UserLabel()
+        public UserGridIcon()
         {
             InitializeComponent();
+        }
+
+        private void UserGridIcon_Load(object sender, EventArgs e)
+        {
+
         }
         bool isSelected = false;
         private void button1_Click(object sender, EventArgs e)
@@ -22,21 +27,14 @@ namespace miniStudio
             if (isSelected)
             {
                 isSelected = false;
-                this.button1.BackgroundImage = Image.FromFile("Resources\\label.png");
-                
+                this.button1.BackgroundImage = Image.FromFile("Resources\\grid1.png");
+
             }
             else
             {
                 isSelected = true;
-                this.button1.BackgroundImage = Image.FromFile("Resources\\label2.png");
+                this.button1.BackgroundImage = Image.FromFile("Resources\\grid2.png");
             }
-            if (UserClick != null)
-                UserClick(sender, new EventArgs());//把按钮自身作为参数传递
         }
-
-        //控件事件外传
-        public delegate void BtnClickHandle(object sender, EventArgs e);
-        //定义事件
-        public event BtnClickHandle UserClick;       
     }
 }

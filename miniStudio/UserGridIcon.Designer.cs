@@ -1,6 +1,6 @@
 ﻿namespace miniStudio
 {
-    partial class UserLabel
+    partial class UserGridIcon
     {
         /// <summary> 
         /// 必需的设计器变量。
@@ -33,23 +33,23 @@
             // 
             // button1
             // 
-            this.button1.BackgroundImage = global::miniStudio.Properties.Resources.label;
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button1.BackgroundImage = global::miniStudio.Properties.Resources.grid1;
             this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button1.Location = new System.Drawing.Point(0, 0);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 20);
-            this.button1.TabIndex = 1;
+            this.button1.TabIndex = 0;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // UserLabel
+            // UserGridIcon
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.button1);
-            this.Name = "UserLabel";
+            this.Name = "UserGridIcon";
             this.Size = new System.Drawing.Size(100, 20);
+            this.Load += new System.EventHandler(this.UserGridIcon_Load);
             this.ResumeLayout(false);
 
         }

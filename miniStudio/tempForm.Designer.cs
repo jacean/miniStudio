@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.userGrid1 = new miniStudio.UserGrid();
+            this.userButton1 = new miniStudio.UserButton();
             this.SuspendLayout();
             // 
             // textBox1
@@ -39,19 +39,17 @@
             this.textBox1.Size = new System.Drawing.Size(100, 21);
             this.textBox1.TabIndex = 1;
             // 
-            // userGrid1
+            // userButton1
             // 
-            this.userGrid1.Colnumber = 6;
-            this.userGrid1.Location = new System.Drawing.Point(32, 41);
-            this.userGrid1.Name = "userGrid1";
-            this.userGrid1.Rownumber = 10;
-            this.userGrid1.Size = new System.Drawing.Size(402, 192);
-            this.userGrid1.TabIndex = 2;
+            this.userButton1.Location = new System.Drawing.Point(195, 97);
+            this.userButton1.Name = "userButton1";
+            this.userButton1.Size = new System.Drawing.Size(100, 20);
+            this.userButton1.TabIndex = 2;
             // 
             // tempForm
             // 
             this.ClientSize = new System.Drawing.Size(497, 373);
-            this.Controls.Add(this.userGrid1);
+            this.Controls.Add(this.userButton1);
             this.Controls.Add(this.textBox1);
             this.Name = "tempForm";
             this.ResumeLayout(false);
@@ -62,7 +60,7 @@
         #endregion
 
         private System.Windows.Forms.TextBox textBox1;
-        private UserGrid userGrid1;
+        private UserButton userButton1;
 
        
 
