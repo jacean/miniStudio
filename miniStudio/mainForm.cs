@@ -16,8 +16,10 @@ namespace miniStudio
         {
             InitializeComponent();
         }
-        UserButton uBut ;
-        UserLabel uLab ;
+        //UserButton uBut ;
+        //UserLabel uLab ;
+        Button uBut;
+        Label uLab;
         UserGrid uGrid;     
        
         #region 控件选择
@@ -44,7 +46,9 @@ namespace miniStudio
             {//之前没选择，现在被选择了
                 butSelected = true;
                 this.ctrBut.BackgroundImage = Image.FromFile("Resources\\button2.png");
-                uBut = new UserButton();
+                //uBut = new UserButton();
+                uBut = new Button();
+                uBut.Text = "TempButton";
                 selCtr = (Control)sender;
                 tempCtr = uBut;
                 ctrType = "But";
@@ -67,7 +71,9 @@ namespace miniStudio
             else
             {
                 labSelected = true;
-                uLab = new UserLabel();
+                //uLab = new UserLabel();
+                uLab = new Label();
+                uLab.Text = "TempLabel";
                 selCtr = (Control)sender;
                 tempCtr = uLab;
                 ctrType = "Lab";
@@ -137,12 +143,17 @@ namespace miniStudio
         {
             timer1.Interval = 200;
             timer1.Enabled = true;
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
 
             foreach (TabPage tab in tabWork.TabPages)
             {
                 tab.MouseEnter += new EventHandler(tab_MouseEnter);
                 tab.MouseMove += new MouseEventHandler(tab_MouseMove);
                 tab.MouseDown += new MouseEventHandler(tab_MouseDown);
+                tab.Paint+=new PaintEventHandler(tab_Paint);
+                
+            
             }
         }
 
@@ -158,13 +169,19 @@ namespace miniStudio
 
                 if (ctrType == "But")
                 {
-                    (tempCtr as UserButton).UserClick += new UserButton.BtnClickHandle(mainForm_UserClick);
-                    (tempCtr as UserButton).UserMouseDown += new UserButton.BtnMouseEvent(control_MouseDown);
-                    (tempCtr as UserButton).UserMouseMove += new UserButton.BtnMouseEvent(control_MouseMove);
-                    (tempCtr as UserButton).UserMouseUp += new UserButton.BtnMouseEvent(control_MouseUp);
+                    //(tempCtr as UserButton).UserClick += new UserButton.BtnClickHandle(mainForm_UserClick);
+                    //(tempCtr as UserButton).UserMouseDown += new UserButton.BtnMouseEvent(control_MouseDown);
+                    //(tempCtr as UserButton).UserMouseMove += new UserButton.BtnMouseEvent(control_MouseMove);
+                    //(tempCtr as UserButton).UserMouseUp += new UserButton.BtnMouseEvent(control_MouseUp);
+                    (tempCtr as Button).Click+=new EventHandler(mainForm_Click);
+                    (tempCtr as Button).MouseDown+=new MouseEventHandler(control_MouseDown);
+                    (tempCtr as Button).MouseMove+=new MouseEventHandler(control_MouseMove);
+                    (tempCtr as Button).MouseUp+=new MouseEventHandler(control_MouseUp);
+
                 }
                 else if (ctrType == "Lab")
-                    (tempCtr as UserLabel).UserClick += new UserLabel.BtnClickHandle(mainForm_UserClick);
+                    //(tempCtr as Label).UserClick += new UserLabel.BtnClickHandle(mainForm_Click);
+                    (tempCtr as Label).Click+=new EventHandler(mainForm_Click);
                 else if (ctrType == "Grid")
                 {
                     // (tempCtr as UserButton).UserClick += new UserButton.BtnClickHandle(mainForm_UserClick);
@@ -173,14 +190,14 @@ namespace miniStudio
                 //旧的控件和选择事件可以消失了
                 endSelectControl();
 
-
+                tempCtr = null;//防止在没有控件的地方点击报错
                 
             }    
         }
 
-        void mainForm_UserClick(object sender, EventArgs e)
+        void mainForm_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(((Control)sender).Name.ToString());    
+            MessageBox.Show(((Control)sender).Text.ToString());    
         }
 
       
@@ -219,6 +236,7 @@ namespace miniStudio
                 Control g = (Control)sender;
                 //g.Visible = false;
                 rect = g.Bounds;
+                label4.Text = e.Location.ToString();
 
             }
         }
@@ -232,10 +250,12 @@ namespace miniStudio
                 isDrag = true;
                 //重新设置rect的位置，跟随鼠标移动
                 rect.Location = getPointToForm((Control)sender, new Point(e.Location.X - mouseDownPoint.X, e.Location.Y - mouseDownPoint.Y));
-
+                //rect.Location = e.Location;
                 //设置线条的跟随变化
                 Control g = (Control)sender;
                 g.Location = rect.Location;
+                label4.Text = g.Location.ToString();
+
 
             }
         }
@@ -264,10 +284,17 @@ namespace miniStudio
             rect = Rectangle.Empty;
             isDrag = false;
         }
+        //private Point getPointToForm(Control control, Point p)
+        //{
+
+        //    return this.PointToClient(control.PointToScreen(p));
+            
+        //}
         private Point getPointToForm(Control control, Point p)
         {
 
-            return this.PointToClient(control.PointToScreen(p));
+            return tabPage1.PointToClient(control.PointToScreen(p));//返回的是相对于tabpage1工作去区的坐标
+
         }
 
         #endregion
@@ -280,7 +307,7 @@ namespace miniStudio
 
         }
 
-        private void tabPage1_Paint(object sender, PaintEventArgs e)
+        private void tab_Paint(object sender, PaintEventArgs e)
         {
             Bitmap bp = new Bitmap(((Control)sender).Width,((Control)sender).Height);
             e.Graphics.DrawImage(bp, ((Control)sender).Location);

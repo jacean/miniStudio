@@ -58,6 +58,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.label4 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -185,7 +186,7 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
-            this.tabPage1.Paint += new System.Windows.Forms.PaintEventHandler(this.tabPage1_Paint);
+            this.tabPage1.Paint += new System.Windows.Forms.PaintEventHandler(this.tab_Paint);
             // 
             // tabPage2
             // 
@@ -285,6 +286,7 @@
             // 
             // grpWatch
             // 
+            this.grpWatch.Controls.Add(this.label4);
             this.grpWatch.Controls.Add(this.label3);
             this.grpWatch.Controls.Add(this.label2);
             this.grpWatch.Controls.Add(this.label1);
@@ -334,6 +336,15 @@
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(7, 61);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 12);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "label4";
             // 
             // mainForm
             // 
@@ -393,6 +404,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label label4;
       
     }
 }
