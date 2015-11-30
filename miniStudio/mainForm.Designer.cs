@@ -49,16 +49,17 @@
             this.ctrBut = new System.Windows.Forms.Button();
             this.ctrGrid = new System.Windows.Forms.Button();
             this.grpPro = new System.Windows.Forms.GroupBox();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.cBPro = new System.Windows.Forms.ComboBox();
+            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.grpWatch = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.label4 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -66,6 +67,7 @@
             this.grpCtr.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.grpPro.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.grpWatch.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -144,15 +146,17 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.08284F));
             this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.grpCtr, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.grpPro, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.grpPro, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.grpWatch, 2, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 32.12435F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.48705F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.64767F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 62.95337F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 2.072539F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 34.71503F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(676, 386);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
@@ -186,7 +190,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
-            this.tabPage1.Paint += new System.Windows.Forms.PaintEventHandler(this.tab_Paint);
             // 
             // tabPage2
             // 
@@ -202,10 +205,10 @@
             // 
             this.grpCtr.Controls.Add(this.flowLayoutPanel1);
             this.grpCtr.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpCtr.Location = new System.Drawing.Point(3, 126);
+            this.grpCtr.Location = new System.Drawing.Point(3, 246);
             this.grpCtr.Name = "grpCtr";
             this.tableLayoutPanel1.SetRowSpan(this.grpCtr, 2);
-            this.grpCtr.Size = new System.Drawing.Size(126, 257);
+            this.grpCtr.Size = new System.Drawing.Size(126, 137);
             this.grpCtr.TabIndex = 1;
             this.grpCtr.TabStop = false;
             this.grpCtr.Text = "控件";
@@ -218,7 +221,7 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(120, 237);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(120, 117);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // ctrLab
@@ -253,49 +256,81 @@
             // 
             // grpPro
             // 
-            this.grpPro.Controls.Add(this.listView1);
+            this.grpPro.Controls.Add(this.tableLayoutPanel2);
             this.grpPro.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpPro.Location = new System.Drawing.Point(549, 126);
+            this.grpPro.Location = new System.Drawing.Point(549, 3);
             this.grpPro.Name = "grpPro";
-            this.grpPro.Size = new System.Drawing.Size(124, 157);
+            this.tableLayoutPanel1.SetRowSpan(this.grpPro, 2);
+            this.grpPro.Size = new System.Drawing.Size(124, 245);
             this.grpPro.TabIndex = 2;
             this.grpPro.TabStop = false;
             this.grpPro.Text = "属性";
             // 
-            // listView1
+            // tableLayoutPanel2
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2});
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.GridLines = true;
-            this.listView1.Location = new System.Drawing.Point(3, 17);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(118, 137);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.tableLayoutPanel2.ColumnCount = 1;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Controls.Add(this.cBPro, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.propertyGrid1, 0, 1);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.55556F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 88.44444F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(118, 225);
+            this.tableLayoutPanel2.TabIndex = 0;
             // 
-            // columnHeader1
+            // cBPro
             // 
-            this.columnHeader1.Text = "Name";
+            this.cBPro.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cBPro.FormattingEnabled = true;
+            this.cBPro.Location = new System.Drawing.Point(3, 3);
+            this.cBPro.Name = "cBPro";
+            this.cBPro.Size = new System.Drawing.Size(112, 20);
+            this.cBPro.TabIndex = 0;
+            this.cBPro.SelectedIndexChanged += new System.EventHandler(this.cBPro_SelectedIndexChanged);
             // 
-            // columnHeader2
+            // propertyGrid1
             // 
-            this.columnHeader2.Text = "Value";
+            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid1.Location = new System.Drawing.Point(3, 29);
+            this.propertyGrid1.Name = "propertyGrid1";
+            this.propertyGrid1.Size = new System.Drawing.Size(112, 193);
+            this.propertyGrid1.TabIndex = 3;
             // 
             // grpWatch
             // 
+            this.grpWatch.Controls.Add(this.label5);
             this.grpWatch.Controls.Add(this.label4);
             this.grpWatch.Controls.Add(this.label3);
             this.grpWatch.Controls.Add(this.label2);
             this.grpWatch.Controls.Add(this.label1);
-            this.grpWatch.Location = new System.Drawing.Point(549, 289);
+            this.grpWatch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpWatch.Location = new System.Drawing.Point(549, 254);
             this.grpWatch.Name = "grpWatch";
-            this.grpWatch.Size = new System.Drawing.Size(124, 94);
+            this.grpWatch.Size = new System.Drawing.Size(124, 129);
             this.grpWatch.TabIndex = 3;
             this.grpWatch.TabStop = false;
             this.grpWatch.Text = "监视";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(9, 78);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 12);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "label5";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(7, 61);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 12);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "label4";
             // 
             // label3
             // 
@@ -337,15 +372,6 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 61);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(41, 12);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "label4";
-            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -365,6 +391,7 @@
             this.grpCtr.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.grpPro.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.grpWatch.ResumeLayout(false);
             this.grpWatch.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -393,9 +420,6 @@
         private System.Windows.Forms.GroupBox grpCtr;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.GroupBox grpPro;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Button ctrBut;
         private System.Windows.Forms.Button ctrLab;
         private System.Windows.Forms.Button ctrGrid;
@@ -405,6 +429,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.PropertyGrid propertyGrid1;
+        private System.Windows.Forms.ComboBox cBPro;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
       
     }
 }

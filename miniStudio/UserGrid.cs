@@ -10,16 +10,120 @@ using System.Windows.Forms;
 namespace miniStudio
 {
     [ToolboxItem(true)]
-    public partial class UserGrid : UserControl
+    public partial class UserGrid : UserControl, ICustomTypeDescriptor
     {
-        public UserGrid()
+        public UserGrid():base()
         {
             InitializeComponent();
             
             this.tableLayoutPanel1.Size = textBox1.Size;
             groupBox1.Width = tableLayoutPanel1.Width;
             this.Size = groupBox1.Size;            
+            this.groupBox1.MouseDown+=new MouseEventHandler(grp_MouseDown);
+            this.groupBox1.MouseMove+=new MouseEventHandler(grp_MouseMove);
+            this.groupBox1.MouseUp+=new MouseEventHandler(grp_MouseUp);
+            this.groupBox1.Click+=new EventHandler(grp_Click);
+
+             propertyNames = new List<string>();
+                propertyNames.Add("Text");
+                propertyNames.Add("Rownumber");
+                propertyNames.Add("Colnumber");
+                propertyNames.Add("Font");
+                propertyNames.Add("Visible");
+                propertyNames.Add("Size");
+                propertyNames.Add("Location");
+
         }
+
+     
+            List<string> propertyNames = null;//存放要显示的属性
+           
+
+            #region ICustomTypeDescriptor 成员
+
+            AttributeCollection ICustomTypeDescriptor.GetAttributes()
+            {
+                return TypeDescriptor.GetAttributes(this.GetType());
+            }
+
+            string ICustomTypeDescriptor.GetClassName()
+            {
+                return TypeDescriptor.GetClassName(this.GetType());
+            }
+
+            string ICustomTypeDescriptor.GetComponentName()
+            {
+                return TypeDescriptor.GetComponentName(this.GetType());
+            }
+
+            TypeConverter ICustomTypeDescriptor.GetConverter()
+            {
+                return TypeDescriptor.GetConverter(this.GetType());
+            }
+
+            EventDescriptor ICustomTypeDescriptor.GetDefaultEvent()
+            {
+                return TypeDescriptor.GetDefaultEvent(this.GetType());
+            }
+
+            PropertyDescriptor ICustomTypeDescriptor.GetDefaultProperty()
+            {
+                return TypeDescriptor.GetDefaultProperty(this.GetType());
+            }
+
+            object ICustomTypeDescriptor.GetEditor(Type editorBaseType)
+            {
+                return TypeDescriptor.GetEditor(this.GetType(), editorBaseType);
+            }
+
+            EventDescriptorCollection ICustomTypeDescriptor.GetEvents(Attribute[] attributes)
+            {
+                return TypeDescriptor.GetEvents(this.GetType(), attributes);
+            }
+
+            EventDescriptorCollection ICustomTypeDescriptor.GetEvents()
+            {
+                return TypeDescriptor.GetEvents(this.GetType());
+            }
+
+            PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
+            {
+                return this.FilterProperties(TypeDescriptor.GetProperties(this.GetType(), attributes));
+            }
+
+            PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
+            {
+                return this.FilterProperties(TypeDescriptor.GetProperties(this.GetType()));
+            }
+
+            object ICustomTypeDescriptor.GetPropertyOwner(PropertyDescriptor pd)
+            {
+                return this;
+            }
+
+            #endregion
+
+            #region 属性过滤
+
+            private PropertyDescriptorCollection FilterProperties(PropertyDescriptorCollection properties)
+            {
+                List<PropertyDescriptor> list = new List<PropertyDescriptor>();
+
+                foreach (string pname in propertyNames)
+                {
+                    var property = properties[pname];
+                    if (property != null)
+                    {
+                        list.Add(property);
+                    }
+                }
+                return new PropertyDescriptorCollection(list.ToArray(), true);
+            }
+
+            #endregion
+        //}
+
+
 
         [Browsable(true)]
         [Description("属性描述"), Category("user"), DefaultValue("UserGrid")]
@@ -68,22 +172,9 @@ namespace miniStudio
 
                     setTableLayout(this.tableLayoutPanel1);
              
-              
-                
             }
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-            //设置tablelayoutpanel控件的DoubleBuffered 属性为true，这样可以减少或消除由于不断重绘所显示图面的某些部分而导致的闪烁
-            //tableLayoutPanel1.GetType().GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(tableLayoutPanel1, true, null);
-            //setTableLayout(this.tableLayoutPanel1);
-        }
         private void setTableLayout(TableLayoutPanel t)
         {
            // tableLayoutPanel1.SuspendLayout();
@@ -124,38 +215,79 @@ namespace miniStudio
             //tableLayoutPanel1.ResumeLayout();
         }
 
-        #region 动态分配
-        //private void DynamicLayout(TableLayoutPanel layoutPanel, int row, int col)
-        //{
-        //    layoutPanel.RowCount = row;    //设置分成几行
-        //    for (int i = 0; i < row; i++)
-        //    {
-        //        layoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-        //    }
-        //    layoutPanel.ColumnCount = col;    //设置分成几列
-        //    for (int i = 0; i < col; i++)
-        //    {
-        //        layoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-        //    }
-        //}
-        #endregion
         #region 自定义事件，委托，事件传递
-        //public delegate void UserMouseDoubleClick(object sender, EventArgs e);
-        ////定义事件
-        //public event UserMouseDoubleClick mouseDoubleClick;
 
-        //private void tableLayoutPanel1_MouseDoubleClick(object sender, MouseEventArgs e)
-        //{
-        //    if (mouseDoubleClick != null)
-        //        mouseDoubleClick(sender, new EventArgs());//把按钮自身作为参数传递
-        //}
+
+        public delegate void GridMouseEvent(object sender, MouseEventArgs e);
+        //定义事件
+        public event GridMouseEvent UserMouseDown;
+        private void grp_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (UserMouseDown != null)
+                UserMouseDown((object)this, e);//把按钮自身作为参数传递
+
+        }
+        //定义事件
+        public event GridMouseEvent UserMouseMove;
+        private void grp_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (UserMouseMove != null)
+                UserMouseMove((object)this, e);//把按钮自身作为参数传递
+        }
+
+        //定义事件
+        public event GridMouseEvent UserMouseUp;
+        private void grp_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (UserMouseUp != null)
+                UserMouseUp((object)this, e);//把按钮自身作为参数传递
+        }
+
+        public delegate void GridClick(object sender, EventArgs e);
+        public event GridClick UserClick;
+        private void grp_Click(object sender, EventArgs e)
+        {
+            if (UserClick != null)
+                UserClick((object)this, e);
+        }
+        public delegate void GridLeave(object sender, EventArgs e);
+        public event GridLeave UserLeave;
+        private void grp_MouseLeave(object sender, EventArgs e)
+        {
+            if (UserLeave != null)
+                UserLeave((object)this, e);
+        }
         #endregion
 
-   
+
 
         private void UserGrid_SizeChanged(object sender, EventArgs e)
         {
             setTableLayout(this.tableLayoutPanel1);
         }
+
+        public Point UserLocation
+        {
+            get { return this.Location; }
+            set { this.Location = value; }
+        }
+
+
+        //设置显示属性
+        //protected override void PostFilterProperties(System.Collections.IDictionary properties)
+        //{
+         
+        //    //locked属性是在设计器中添加的,必须自定义设计器才能把它过滤掉
+
+        //    properties.Remove("Locked");
+
+        //    properties.Remove("Size");
+
+        //    base.PostFilterProperties(properties);
+        //}
+
+       
+       
+        
     }
 }
