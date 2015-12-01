@@ -60,6 +60,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.rightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tabRename = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.显示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -70,6 +78,8 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.grpWatch.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.rightMenu.SuspendLayout();
+            this.hideMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -99,25 +109,25 @@
             // 新建ToolStripMenuItem
             // 
             this.新建ToolStripMenuItem.Name = "新建ToolStripMenuItem";
-            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.新建ToolStripMenuItem.Text = "新建";
             // 
             // 打开ToolStripMenuItem
             // 
             this.打开ToolStripMenuItem.Name = "打开ToolStripMenuItem";
-            this.打开ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.打开ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.打开ToolStripMenuItem.Text = "打开";
             // 
             // 保存ToolStripMenuItem
             // 
             this.保存ToolStripMenuItem.Name = "保存ToolStripMenuItem";
-            this.保存ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.保存ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.保存ToolStripMenuItem.Text = "保存";
             // 
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.退出ToolStripMenuItem.Text = "退出";
             // 
             // 编辑ToolStripMenuItem
@@ -148,6 +158,7 @@
             this.tableLayoutPanel1.Controls.Add(this.grpCtr, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.grpPro, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.grpWatch, 2, 2);
+            this.tableLayoutPanel1.Controls.Add(this.treeView1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -180,6 +191,7 @@
             this.tabWork.SelectedIndex = 0;
             this.tabWork.Size = new System.Drawing.Size(408, 380);
             this.tabWork.TabIndex = 0;
+            this.tabWork.SelectedIndexChanged += new System.EventHandler(this.tabWork_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -372,6 +384,66 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // treeView1
+            // 
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.Location = new System.Drawing.Point(3, 3);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(126, 237);
+            this.treeView1.TabIndex = 4;
+            // 
+            // rightMenu
+            // 
+            this.rightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tabClose,
+            this.tabRename,
+            this.tabDelete});
+            this.rightMenu.Name = "rightMenu";
+            this.rightMenu.Size = new System.Drawing.Size(107, 70);
+            // 
+            // tabRename
+            // 
+            this.tabRename.Name = "tabRename";
+            this.tabRename.Size = new System.Drawing.Size(152, 22);
+            this.tabRename.Text = "重命名";
+            this.tabRename.Click += new System.EventHandler(this.tabRename_Click);
+            // 
+            // tabDelete
+            // 
+            this.tabDelete.Name = "tabDelete";
+            this.tabDelete.Size = new System.Drawing.Size(152, 22);
+            this.tabDelete.Text = "删除";
+            this.tabDelete.Click += new System.EventHandler(this.tabDelete_Click);
+            // 
+            // tabClose
+            // 
+            this.tabClose.Name = "tabClose";
+            this.tabClose.Size = new System.Drawing.Size(106, 22);
+            this.tabClose.Text = "关闭";
+            this.tabClose.Click += new System.EventHandler(this.Close_Click);
+            // 
+            // hideMenu
+            // 
+            this.hideMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.显示ToolStripMenuItem,
+            this.删除ToolStripMenuItem});
+            this.hideMenu.Name = "hideMenu";
+            this.hideMenu.Size = new System.Drawing.Size(153, 70);
+            // 
+            // 显示ToolStripMenuItem
+            // 
+            this.显示ToolStripMenuItem.Name = "显示ToolStripMenuItem";
+            this.显示ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.显示ToolStripMenuItem.Text = "显示";
+            this.显示ToolStripMenuItem.Click += new System.EventHandler(this.显示ToolStripMenuItem_Click);
+            // 
+            // 删除ToolStripMenuItem
+            // 
+            this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
+            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.删除ToolStripMenuItem.Text = "删除";
+            this.删除ToolStripMenuItem.Click += new System.EventHandler(this.删除ToolStripMenuItem_Click);
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -395,6 +467,8 @@
             this.grpWatch.ResumeLayout(false);
             this.grpWatch.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.rightMenu.ResumeLayout(false);
+            this.hideMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -433,6 +507,14 @@
         private System.Windows.Forms.PropertyGrid propertyGrid1;
         private System.Windows.Forms.ComboBox cBPro;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.ContextMenuStrip rightMenu;
+        private System.Windows.Forms.ToolStripMenuItem tabRename;
+        private System.Windows.Forms.ToolStripMenuItem tabDelete;
+        private System.Windows.Forms.ToolStripMenuItem tabClose;
+        private System.Windows.Forms.ContextMenuStrip hideMenu;
+        private System.Windows.Forms.ToolStripMenuItem 显示ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 删除ToolStripMenuItem;
       
     }
 }

@@ -37,6 +37,11 @@ namespace miniStudio
             panel1.MouseMove+=new MouseEventHandler( rc.frmMain_MouseMove);
             panel1.MouseUp += new MouseEventHandler(rc.frmMain_MouseUp);
 
+             foreach (Button btn in panel1.Controls.OfType<Button>())
+{
+    btn.Text = "a";
+}
+
 
         }
         
