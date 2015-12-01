@@ -250,6 +250,7 @@ namespace miniStudio
             if (UserClick != null)
                 UserClick((object)this, e);
         }
+
         public delegate void GridLeave(object sender, EventArgs e);
         public event GridLeave UserLeave;
         private void grp_MouseLeave(object sender, EventArgs e)

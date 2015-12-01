@@ -22,10 +22,18 @@ namespace miniStudio
         Label uLab;
         UserGrid uGrid;
         List<Control> listControls = new List<Control>();
-       
+        bool isDown = false;//在判断移动前先看是否选中
+        bool moveDown = false;//是否正在移动控件
         bool isMulSel = false;//标记是否多选
-         List<Control> listSelControl=new List<Control>();//用来选择已经创建的控件，并修改属性;//listSelControl和dictRec成对出现
+        /// <summary>
+        /// 用来选择已经创建的控件，并修改属性;//listSelControl和dictRec成对出现
+        /// 在点击选中控件的时候改变，在新建控件的时候改变
+        /// </summary>
+         List<Control> listSelControl=new List<Control>();//
         Dictionary<Control, List<Rectangle>> dictRec = new Dictionary<Control, List<Rectangle>>();//每个页签里的选中的矩形框
+       
+        bool MouseIsDown = false;
+        Rectangle MouseRect = Rectangle.Empty;//画矩形框
 
         int[] tempCount = new int[] { 0, 0, 0 };//label\button\grid的默认名字数量后缀
         int tabCount = 1;//标签页数
@@ -38,7 +46,7 @@ namespace miniStudio
         bool butSelected = false;
         private void ctrBut_Click(object sender, EventArgs e)
         {
-
+            
             selectControl(sender);
          
 
@@ -144,7 +152,7 @@ namespace miniStudio
         private void updateWatch()
         {           
             if (selCtr != null) label2.Text = selCtr.Name.ToString(); else label2.Text = "null";
-            if (tempCtr != null) label3.Text = tempCtr.Name.ToString(); else label3.Text = "null";
+            //if (tempCtr != null) label3.Text = tempCtr.Name.ToString(); else label3.Text = "null";
         }
 
         private void mainForm_Load(object sender, EventArgs e)
@@ -154,23 +162,78 @@ namespace miniStudio
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
             tabCount = tabWork.TabPages.Count;
+           
             foreach (TabPage tab in tabWork.TabPages)
             {
+               
                 tab.Click += new EventHandler(tab_Click);
                 tab.MouseEnter += new EventHandler(tab_MouseEnter);
                 tab.MouseMove += new MouseEventHandler(tab_MouseMove);
                 tab.MouseDown += new MouseEventHandler(tab_MouseDown);
                 tab.MouseLeave += new EventHandler(tab_MouseLeave);
+            
                 tab.Paint += new PaintEventHandler(tab_Paint);
                 dictRec.Add(tab, new List<Rectangle>());
+                //添加选择矩形选中控件事件
+                tab.MouseUp += new MouseEventHandler(tab_MouseUp);
+              
+               
             }
             
         }
 
+        void tab_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (tempCtr == null)
+            {
+                Control tab = (Control)sender;
+                tab.Capture = false;
+                Cursor.Clip = Rectangle.Empty;
+                MouseIsDown = false;
+                DrawRectangle(tab);
+                listSelControl.Clear();
+                label3.Text = "当前选中控件:";
+                dictRec[((Control)sender)].Clear();//把之前的选择清掉
+                foreach (Control ct in tab.Controls)
+                {
+              
+                   if (MouseRect.IntersectsWith(ct.Bounds))
+                   //if (MouseRect.Contains(ct.Bounds))
+                    {
+                        addListRect(ct);
+                    }
+                }
+
+                MouseRect = Rectangle.Empty;
+
+            }
+
+
+        }
+
+        private void ResizeToRectangle(Point p,Control tab)
+        {
+            DrawRectangle(tab);
+            MouseRect.Width = p.X - MouseRect.Left;
+            MouseRect.Height = p.Y - MouseRect.Top;
+            DrawRectangle(tab);
+        }
+        private void DrawRectangle(Control tab)
+        {
+            Rectangle rect = tab.RectangleToScreen(MouseRect);
+            ControlPaint.DrawReversibleFrame(rect, Color.White, FrameStyle.Dashed);
+        }
+        private void DrawStart(Point StartPoint,Control tab)
+        {
+            tab.Capture = true;
+            Cursor.Clip = tab.RectangleToScreen(new Rectangle(0, 0, tab.Width, tab.Height));
+
+            MouseRect = new Rectangle(StartPoint.X, StartPoint.Y, 0, 0);
+        }
+
         void tab_Click(object sender, EventArgs e)
         {
-            dictRec[(Control)sender].Clear();
-            listSelControl.Clear();//点在空白地方，则让之前的选择取消
+            resetListRect((Control)sender);//点在空白地方，则让之前的选择取消
             this.Invalidate();
             this.Refresh();
             
@@ -219,31 +282,75 @@ namespace miniStudio
                     (tempCtr as UserGrid).UserMouseDown += new UserGrid.GridMouseEvent(cs.MyMouseDown);
                     (tempCtr as UserGrid).UserMouseMove += new UserGrid.GridMouseEvent(cs.MyMouseMove);
                     (tempCtr as UserGrid).UserLeave+=new UserGrid.GridLeave(cs.MyMouseLeave);
+
+                    (tempCtr as UserGrid).UserMouseDown += new UserGrid.GridMouseEvent(tempCtr_MouseDown);
+                    (tempCtr as UserGrid).UserMouseMove += new UserGrid.GridMouseEvent(tempCtr_MouseMove);
+                    (tempCtr as UserGrid).UserMouseUp += new UserGrid.GridMouseEvent(tempCtr_MouseUp);
                 }
+                tempCtr.MouseDown += new MouseEventHandler(tempCtr_MouseDown);
+                tempCtr.MouseMove += new MouseEventHandler(tempCtr_MouseMove);
+                tempCtr.MouseUp += new MouseEventHandler(tempCtr_MouseUp);
                 listControls.Add(tempCtr);
                 updateCombox(tempCtr);
+               
+                resetListRect((Control)sender);//新建控件，则让之前的选择取消                
+                addListRect(tempCtr);
+               
                 //旧的控件和选择事件可以消失了
                 endSelectControl();
                 tempCtr = null;
 
             }
             else
-            { 
-                
+            {
+                MouseIsDown = true;
+                DrawStart(e.Location,tab); 
             }
-   
+           
+        }
+
+      
+        void tempCtr_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (tempCtr == null)
+            {
+                isDown = false;
+                moveDown = false; this.Refresh();
+            }
+        }
+
+        void tempCtr_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (tempCtr == null)
+            {
+                if (isDown)
+                { moveDown = true; }
+                else
+                    moveDown = false;
+                this.Refresh();
+            }
+        }
+
+        void tempCtr_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (tempCtr == null)
+            {
+                isDown = true;
+            }
         }
        
         private void updateCombox(Control c)
         {
             cBPro.Items.Clear();
+            
             for (int i = 0; i < listControls.Count; i++)
             {
                 cBPro.Items.Add(listControls[i].Name.ToString());
                 if (c == listControls[i])
                 {
                     cBPro.SelectedIndex = i;
-                    propertyGrid1.SelectedObject = (object)listControls[i];
+                   // propertyGrid1.SelectedObject = (object)listControls[i];
+                   
                 }
             }
         }
@@ -274,8 +381,7 @@ namespace miniStudio
 
                 }
 
-                listSelControl.Clear();
-                dictRec[((Control)sender).Parent].Clear();//因为是单选
+                resetListRect(((Control)sender).Parent);              
                 addListRect((Control)sender);
 
             }
@@ -284,9 +390,9 @@ namespace miniStudio
                 addListRect((Control)sender);//同时，既加rec，也加空间
                
             }
-            if(listSelControl.Count>0)updateCombox(listSelControl[0]);
-            propertyGrid1.SelectedObjects = (Object[])listSelControl.ToArray();
-            listControls.Clear();//用完就请
+            if(listSelControl.Count>0)updateCombox(listSelControl[0]);//在这个里边会调整属性对象，所以需要在后边强制更改一下
+            propertyGrid1.SelectedObjects = (Object[])listSelControl.ToArray();            
+         
         }
 
         #region tab的事件
@@ -296,7 +402,14 @@ namespace miniStudio
             if (tempCtr != null)
             {
                 tempCtr.Location = new Point(e.Location.X + 3, e.Location.Y + 3);//直接就是相对于当前空间的坐标
-            }    
+            }
+            else
+            {
+                tab.Cursor = Cursors.Default;
+                //用来判断是否画矩形框
+                if (MouseIsDown)
+                    ResizeToRectangle(e.Location,tab);
+            }
         }
 
         void tab_MouseEnter(object sender, EventArgs e)
@@ -319,7 +432,13 @@ namespace miniStudio
 
         }
 
-      
+        private void resetListRect(Control tab)
+        {
+            listSelControl.Clear();
+            dictRec[tab].Clear();//因为是单选
+            propertyGrid1.SelectedObject = listControls[listControls.Count - 1];
+        }
+
         private void addListRect(Control s)
         {//画虚线,重复选择则取消
             Rectangle rect = new Rectangle();
@@ -329,7 +448,7 @@ namespace miniStudio
             rect.Y -= 3;
             rect.Height += 6;
             rect.Width += 6;
-
+            label3.Text = "当前已选中:";
             if (dictRec[s.Parent].Contains(rect))
             {
                 dictRec[s.Parent].Remove(rect);
@@ -340,8 +459,13 @@ namespace miniStudio
                 dictRec[s.Parent].Add(rect);//因为没有容器控件，所以敢这样
                 listSelControl.Add(s);
             }
-          
-            this.Invalidate();
+            foreach (var item in listSelControl)
+            {
+                label3.Text += item.Name+"、";
+
+            }
+            propertyGrid1.SelectedObjects = (Object[])listSelControl.ToArray();
+            
             this.Refresh();
             
             
@@ -349,10 +473,13 @@ namespace miniStudio
         
         private void tab_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = ((Control)sender).CreateGraphics();
-            foreach (Rectangle r in dictRec[(Control)sender])
+            if (!moveDown)
             {
-                ControlPaint.DrawBorder(g, r, Color.Red, ButtonBorderStyle.Dashed);
+                Graphics g = ((Control)sender).CreateGraphics();
+                foreach (Rectangle r in dictRec[(Control)sender])
+                {
+                    ControlPaint.DrawBorder(g, r, Color.Gray, ButtonBorderStyle.Dashed);
+                }
             }
           
         }

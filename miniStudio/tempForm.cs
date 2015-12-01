@@ -32,6 +32,12 @@ namespace miniStudio
                 this.panel1.Controls[i].MouseMove += new System.Windows.Forms.MouseEventHandler(cs.MyMouseMove);
             }
 
+            rectSelectedObjects rc = new rectSelectedObjects(panel1);
+            panel1.MouseDown += new MouseEventHandler(rc.frmMain_MouseDown);
+            panel1.MouseMove+=new MouseEventHandler( rc.frmMain_MouseMove);
+            panel1.MouseUp += new MouseEventHandler(rc.frmMain_MouseUp);
+
+
         }
         
 
