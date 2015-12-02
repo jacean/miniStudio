@@ -49,6 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="controlSize.cs" />
+    <Compile Include="controlState.cs" />
+    <Compile Include="dafaultSetting.cs" />
+    <Compile Include="gridState.cs" />
     <Compile Include="mainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +95,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="rectSelectedObjects.cs" />
+    <Compile Include="tabState.cs" />
     <Compile Include="tempForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,6 +113,12 @@
     </Compile>
     <Compile Include="UserControl1.Designer.cs">
       <DependentUpon>UserControl1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl2.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserControl2.Designer.cs">
+      <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
     <Compile Include="UserGrid.cs">
       <SubType>UserControl</SubType>

@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace miniStudio
 {
+    [Serializable] 
     public partial class mainForm : Form
     {
         public mainForm()
@@ -61,10 +62,12 @@ namespace miniStudio
            
             txt.KeyDown += new KeyEventHandler(txt_KeyDown);
             txt.Leave += new EventHandler(txt_Leave);
+            //txt.LostFocus += new EventHandler(txt_LostFocus);
             treeView1.Controls.Add(txt);
             txt.Hide();
         }
 
+      
 
         void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
@@ -76,10 +79,9 @@ namespace miniStudio
                 t.Name ="tabPage"+tabCount;
                 t.Text = t.Name;
                 tabWork.TabPages.Add(t);
-                addTabEvents(t);
-                tabWork.SelectedTab = t;
+                addTabEvents(t);  
+                tabWork.SelectedTab = t;//新增后一直会选择newtab而不是新增的那个吗，调不好了
                 updateTreeview();
-                treeView1.SelectedNode = treeView1.Nodes[0].LastNode.PrevNode;//不知道为什么，这里的跳转会自动恢复
                 this.Refresh();
             }
             else
@@ -449,8 +451,11 @@ namespace miniStudio
         private void cBPro_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listControls != null)//确保listcontrols不为空
+            {
                 propertyGrid1.SelectedObject = (object)listControls[cBPro.SelectedIndex];
-
+                resetListRect(listControls[cBPro.SelectedIndex].Parent);
+                addListRect(listControls[cBPro.SelectedIndex]);
+            }
         }
       
         /// 检测鼠标坐标       
@@ -458,6 +463,7 @@ namespace miniStudio
         {
             Point p = this.PointToClient(Cursor.Position);            
             label1.Text = p.ToString();
+           
 
         }
 
@@ -545,8 +551,7 @@ namespace miniStudio
 
         private void updateTreeview()
         {
-            TreeNode tnode = treeView1.SelectedNode;
-            
+                       
             treeView1.Nodes.Clear();
             TreeNode root = new TreeNode("miniStudio");
             foreach (Control item in tabWork.TabPages)
@@ -568,16 +573,19 @@ namespace miniStudio
             treeView1.Nodes.Add(hideRoot);
 
             treeView1.ExpandAll();
-            if (tnode == null) return;
+            
             foreach (TreeNode n in treeView1.Nodes)
             {
                 foreach (TreeNode m in n.Nodes)
-                {
-                    if (m.Text == tnode.Text)
+                {                   
+                    if (m.Text == tabWork.SelectedTab.Name)
+                    {
                         treeView1.SelectedNode = m;
+                    }
                 }
                 
             }
+
             this.Refresh();
            
         }
@@ -633,7 +641,51 @@ namespace miniStudio
 
         void txt_Leave(object sender, EventArgs e)
         {
-            ((Control)sender).Hide();
+            if (canReNameTab())
+            {
+                txt.Hide();
+                updateTreeview();
+            }
+            else
+            {
+                txt.Focus();
+                txt.SelectAll();
+             
+            }
+            
+           
+        }
+      
+
+        private bool canReNameTab()
+        {
+            txt.Text = txt.Text.Trim();
+            if (txt.Text.Contains(" ") || txt.Text.Contains(".")||txt.Text.Length<1)
+            {
+                MessageBox.Show("有非法字符");
+                return false;
+            }
+            
+            foreach (string i in dictHideTab.Keys)
+            {
+                if (txt.Text == i)
+                {
+                    MessageBox.Show("在关闭的tab中已存在相同名字的tab，请重新命名！");
+                    return false;
+                }
+            }
+            foreach (TabPage t in tabWork.TabPages)
+            {
+                if (txt.Text == t.Name)
+                {
+                    if (txt.Text != treeView1.SelectedNode.Text)
+                    {
+                        MessageBox.Show("已存在相同名字的tab，请重新命名！");
+                        return false;
+                    }
+                }
+              
+            }
             foreach (TabPage t in tabWork.TabPages)
             {
                 if (t.Name == treeView1.SelectedNode.Text)
@@ -644,27 +696,25 @@ namespace miniStudio
                     break;
                 }
             }
-            txt.Hide();
-            updateTreeview();
+            
+            return true;
         }
         void txt_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                ((Control)sender).Hide();              
-                foreach (TabPage t in tabWork.TabPages)
+               
+                if (canReNameTab())
                 {
-                    if (t.Name == treeView1.SelectedNode.Text)
-                    {
-                        t.Name = txt.Text;
-                        t.Text = txt.Text;
-                        treeView1.SelectedNode.Text =txt.Text;
-                        break;
-                    }
+                    txt.Hide();
+                    updateTreeview();
                 }
-                txt.Hide();
-                updateTreeview();
-                
+                else
+                {
+                    txt.Focus();
+                    txt.SelectAll();
+                    return;
+                }
             }
         }
         private void tabDelete_Click(object sender, EventArgs e)
@@ -747,10 +797,15 @@ namespace miniStudio
 
         }
 
-     
+        private void 保存ToolStripMenuItem_Click(object sender, EventArgs e)
+        {//建立项目文件
+            FolderBrowserDialog fd = new FolderBrowserDialog();
+            if (fd.ShowDialog() == DialogResult.OK)
+            { 
+                
+            }
+        }
 
-
-     
 
     }
 }

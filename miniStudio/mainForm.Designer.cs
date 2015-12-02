@@ -58,13 +58,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.treeView1 = new System.Windows.Forms.TreeView();
             this.rightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tabClose = new System.Windows.Forms.ToolStripMenuItem();
             this.tabRename = new System.Windows.Forms.ToolStripMenuItem();
             this.tabDelete = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabClose = new System.Windows.Forms.ToolStripMenuItem();
             this.hideMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.显示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -123,6 +123,7 @@
             this.保存ToolStripMenuItem.Name = "保存ToolStripMenuItem";
             this.保存ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.保存ToolStripMenuItem.Text = "保存";
+            this.保存ToolStripMenuItem.Click += new System.EventHandler(this.保存ToolStripMenuItem_Click);
             // 
             // 退出ToolStripMenuItem
             // 
@@ -371,6 +372,14 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "label1";
             // 
+            // treeView1
+            // 
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.Location = new System.Drawing.Point(3, 3);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(126, 237);
+            this.treeView1.TabIndex = 4;
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.tableLayoutPanel1);
@@ -384,14 +393,6 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // treeView1
-            // 
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView1.Location = new System.Drawing.Point(3, 3);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(126, 237);
-            this.treeView1.TabIndex = 4;
-            // 
             // rightMenu
             // 
             this.rightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -401,20 +402,6 @@
             this.rightMenu.Name = "rightMenu";
             this.rightMenu.Size = new System.Drawing.Size(107, 70);
             // 
-            // tabRename
-            // 
-            this.tabRename.Name = "tabRename";
-            this.tabRename.Size = new System.Drawing.Size(152, 22);
-            this.tabRename.Text = "重命名";
-            this.tabRename.Click += new System.EventHandler(this.tabRename_Click);
-            // 
-            // tabDelete
-            // 
-            this.tabDelete.Name = "tabDelete";
-            this.tabDelete.Size = new System.Drawing.Size(152, 22);
-            this.tabDelete.Text = "删除";
-            this.tabDelete.Click += new System.EventHandler(this.tabDelete_Click);
-            // 
             // tabClose
             // 
             this.tabClose.Name = "tabClose";
@@ -422,25 +409,39 @@
             this.tabClose.Text = "关闭";
             this.tabClose.Click += new System.EventHandler(this.Close_Click);
             // 
+            // tabRename
+            // 
+            this.tabRename.Name = "tabRename";
+            this.tabRename.Size = new System.Drawing.Size(106, 22);
+            this.tabRename.Text = "重命名";
+            this.tabRename.Click += new System.EventHandler(this.tabRename_Click);
+            // 
+            // tabDelete
+            // 
+            this.tabDelete.Name = "tabDelete";
+            this.tabDelete.Size = new System.Drawing.Size(106, 22);
+            this.tabDelete.Text = "删除";
+            this.tabDelete.Click += new System.EventHandler(this.tabDelete_Click);
+            // 
             // hideMenu
             // 
             this.hideMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.显示ToolStripMenuItem,
             this.删除ToolStripMenuItem});
             this.hideMenu.Name = "hideMenu";
-            this.hideMenu.Size = new System.Drawing.Size(153, 70);
+            this.hideMenu.Size = new System.Drawing.Size(95, 48);
             // 
             // 显示ToolStripMenuItem
             // 
             this.显示ToolStripMenuItem.Name = "显示ToolStripMenuItem";
-            this.显示ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.显示ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.显示ToolStripMenuItem.Text = "显示";
             this.显示ToolStripMenuItem.Click += new System.EventHandler(this.显示ToolStripMenuItem_Click);
             // 
             // 删除ToolStripMenuItem
             // 
             this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
-            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.删除ToolStripMenuItem.Text = "删除";
             this.删除ToolStripMenuItem.Click += new System.EventHandler(this.删除ToolStripMenuItem_Click);
             // 
