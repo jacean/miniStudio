@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="serializationHelper.cs" />
     <Compile Include="controlSize.cs" />
     <Compile Include="controlState.cs" />
     <Compile Include="dafaultSetting.cs" />
@@ -102,23 +103,17 @@
     <Compile Include="tempForm.Designer.cs">
       <DependentUpon>tempForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="testForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="testForm.Designer.cs">
+      <DependentUpon>testForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UserButton.Designer.cs">
       <DependentUpon>UserButton.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControl1.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UserControl1.Designer.cs">
-      <DependentUpon>UserControl1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControl2.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UserControl2.Designer.cs">
-      <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
     <Compile Include="UserGrid.cs">
       <SubType>UserControl</SubType>
@@ -137,6 +132,12 @@
     </Compile>
     <Compile Include="UserLabel.Designer.cs">
       <DependentUpon>UserLabel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="aaa.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="aaa.Designer.cs">
+      <DependentUpon>aaa.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -160,16 +161,20 @@
     <EmbeddedResource Include="Resources\label2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="testForm.resx">
+      <DependentUpon>testForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserButton.resx">
       <DependentUpon>UserButton.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl1.resx">
-      <DependentUpon>UserControl1.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="UserGridIcon.resx">
       <DependentUpon>UserGridIcon.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="aaa.resx">
+      <DependentUpon>aaa.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

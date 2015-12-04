@@ -8,7 +8,10 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.IO; 
+using System.Security;
+using System.IO;
+using System.Reflection;
+using System.Security.Permissions; 
 
 namespace miniStudio
 {
@@ -21,45 +24,47 @@ namespace miniStudio
 
         }        
         ///   <summary> 
-        ///   反序列化构造函数 
+        ///   
         ///   </summary> 
         ///   <param   name= "info "> </param> 
         ///   <param   name= "context "> </param> 
+        [SecurityPermissionAttribute(SecurityAction.Demand,SerializationFormatter=true)]
         public tempForm(SerializationInfo info, StreamingContext context) 
-        { 
-        this.Name   =   info.GetString( "Name "); 
-        this.Size   =   (Size)info.GetValue( "Size ",   typeof(Size)); 
-        this.Location   =   (Point)info.GetValue( "Location ",   typeof(Point)); 
+        {
+            //Type baseType = this.GetType().BaseType;
+            //MemberInfo[] mi = FormatterServices.GetSerializableMembers(baseType, context);
+            //for (int i = 0; i < mi.Length; i++)
+            //{
+            //    FieldInfo fi = (FieldInfo)mi[i];
+            //    fi.SetValue(this, info.GetValue(baseType.FullName + "+" + fi.Name, fi.FieldType));
+            //}
+            this.Text = info.GetString("Text");
+            this.Name   =   info.GetString( "Name "); 
+            this.Size   =   (Size)info.GetValue( "Size ",   typeof(Size)); 
+            this.Location   =   (Point)info.GetValue( "Location ",   typeof(Point)); 
         } 
         /// 
         private void tempForm_Load(object sender, EventArgs e)
         {
-            ////为了方便测试定义内存流 
-            //MemoryStream ms = new MemoryStream();
-            //BinaryFormatter form = new BinaryFormatter();
-
-            //Type type = typeof(SerializableForm);
-            //object obj = Activator.CreateInstance(type);
-            ////对对象进行序列化 
-            ////form.Serialize(ms,obj); 
-            ////ms.Flush(); 
-            ////获取流中的数据以便反序列化 
-            //byte[] bts = ms.GetBuffer();
-
-            ////反序列化操作 
-            //MemoryStream _ms = new MemoryStream(bts);
-            ////生成反序列化后的对象 
-            //object ff = form.Deserialize(_ms);
+           
 
         }
 
         #region ISerializable 成员
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        [SecurityPermissionAttribute(SecurityAction.Demand,SerializationFormatter=true)]
+        public  virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            info.AddValue("Text",this.Text);
             info.AddValue("Name ", this.Name);
             info.AddValue("Size ", this.Size);
-            info.AddValue("Location ", this.Location); 
+            info.AddValue("Location ", this.Location);
+
+            //Type baseType = this.GetType().BaseType;
+            //MemberInfo[] mi = FormatterServices.GetSerializableMembers(baseType, context);
+            //for (Int32 i = 0; i < mi.Length; i++)
+            //{
+            //    info.AddValue(baseType.FullName + "+" + mi[i].Name, ((FieldInfo)mi[i]).GetValue(this));
+            //}
         }
 
         #endregion

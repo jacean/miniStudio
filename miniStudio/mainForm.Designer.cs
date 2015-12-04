@@ -91,7 +91,7 @@
             this.帮助ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(676, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(674, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -109,26 +109,26 @@
             // 新建ToolStripMenuItem
             // 
             this.新建ToolStripMenuItem.Name = "新建ToolStripMenuItem";
-            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.新建ToolStripMenuItem.Text = "新建";
             // 
             // 打开ToolStripMenuItem
             // 
             this.打开ToolStripMenuItem.Name = "打开ToolStripMenuItem";
-            this.打开ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.打开ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.打开ToolStripMenuItem.Text = "打开";
             // 
             // 保存ToolStripMenuItem
             // 
             this.保存ToolStripMenuItem.Name = "保存ToolStripMenuItem";
-            this.保存ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.保存ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.保存ToolStripMenuItem.Text = "保存";
             this.保存ToolStripMenuItem.Click += new System.EventHandler(this.保存ToolStripMenuItem_Click);
             // 
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.退出ToolStripMenuItem.Text = "退出";
             // 
             // 编辑ToolStripMenuItem
@@ -169,17 +169,17 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 34.71503F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(676, 386);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(674, 384);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.tabWork);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(135, 3);
+            this.panel2.Location = new System.Drawing.Point(134, 3);
             this.panel2.Name = "panel2";
             this.tableLayoutPanel1.SetRowSpan(this.panel2, 3);
-            this.panel2.Size = new System.Drawing.Size(408, 380);
+            this.panel2.Size = new System.Drawing.Size(407, 378);
             this.panel2.TabIndex = 0;
             // 
             // tabWork
@@ -190,7 +190,7 @@
             this.tabWork.Location = new System.Drawing.Point(0, 0);
             this.tabWork.Name = "tabWork";
             this.tabWork.SelectedIndex = 0;
-            this.tabWork.Size = new System.Drawing.Size(408, 380);
+            this.tabWork.Size = new System.Drawing.Size(407, 378);
             this.tabWork.TabIndex = 0;
             this.tabWork.SelectedIndexChanged += new System.EventHandler(this.tabWork_SelectedIndexChanged);
             // 
@@ -199,7 +199,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 21);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(400, 355);
+            this.tabPage1.Size = new System.Drawing.Size(399, 353);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -218,10 +218,10 @@
             // 
             this.grpCtr.Controls.Add(this.flowLayoutPanel1);
             this.grpCtr.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpCtr.Location = new System.Drawing.Point(3, 246);
+            this.grpCtr.Location = new System.Drawing.Point(3, 245);
             this.grpCtr.Name = "grpCtr";
             this.tableLayoutPanel1.SetRowSpan(this.grpCtr, 2);
-            this.grpCtr.Size = new System.Drawing.Size(126, 137);
+            this.grpCtr.Size = new System.Drawing.Size(125, 136);
             this.grpCtr.TabIndex = 1;
             this.grpCtr.TabStop = false;
             this.grpCtr.Text = "控件";
@@ -234,7 +234,7 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(120, 117);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(119, 116);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // ctrLab
@@ -271,10 +271,10 @@
             // 
             this.grpPro.Controls.Add(this.tableLayoutPanel2);
             this.grpPro.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpPro.Location = new System.Drawing.Point(549, 3);
+            this.grpPro.Location = new System.Drawing.Point(547, 3);
             this.grpPro.Name = "grpPro";
             this.tableLayoutPanel1.SetRowSpan(this.grpPro, 2);
-            this.grpPro.Size = new System.Drawing.Size(124, 245);
+            this.grpPro.Size = new System.Drawing.Size(124, 243);
             this.grpPro.TabIndex = 2;
             this.grpPro.TabStop = false;
             this.grpPro.Text = "属性";
@@ -291,7 +291,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.55556F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 88.44444F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(118, 225);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(118, 223);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // cBPro
@@ -307,9 +307,9 @@
             // propertyGrid1
             // 
             this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid1.Location = new System.Drawing.Point(3, 29);
+            this.propertyGrid1.Location = new System.Drawing.Point(3, 28);
             this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(112, 193);
+            this.propertyGrid1.Size = new System.Drawing.Size(112, 192);
             this.propertyGrid1.TabIndex = 3;
             // 
             // grpWatch
@@ -320,7 +320,7 @@
             this.grpWatch.Controls.Add(this.label2);
             this.grpWatch.Controls.Add(this.label1);
             this.grpWatch.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpWatch.Location = new System.Drawing.Point(549, 254);
+            this.grpWatch.Location = new System.Drawing.Point(547, 252);
             this.grpWatch.Name = "grpWatch";
             this.grpWatch.Size = new System.Drawing.Size(124, 129);
             this.grpWatch.TabIndex = 3;
@@ -377,7 +377,7 @@
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(3, 3);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(126, 237);
+            this.treeView1.Size = new System.Drawing.Size(125, 236);
             this.treeView1.TabIndex = 4;
             // 
             // panel1
@@ -386,7 +386,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(676, 386);
+            this.panel1.Size = new System.Drawing.Size(674, 384);
             this.panel1.TabIndex = 2;
             // 
             // timer1
@@ -449,7 +449,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(676, 410);
+            this.ClientSize = new System.Drawing.Size(674, 408);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;

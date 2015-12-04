@@ -22,6 +22,7 @@ namespace miniStudio
         Label uLab;
         UserGrid uGrid;
         List<Control> listControls = new List<Control>();
+        Dictionary<Control, TabPage> dictControlswithTab = new Dictionary<Control, TabPage>();
         bool isDown = false;//在判断移动前先看是否选中
         bool moveDown = false;//是否正在移动控件
         bool isMulSel = false;//标记是否多选
@@ -389,6 +390,7 @@ namespace miniStudio
                 tempCtr.MouseMove += new MouseEventHandler(tempCtr_MouseMove);
                 tempCtr.MouseUp += new MouseEventHandler(tempCtr_MouseUp);
                 listControls.Add(tempCtr);
+                dictControlswithTab.Add(tempCtr,(TabPage)sender);
                 updateCombox(tempCtr);
 
                 resetListRect((Control)sender);//新建控件，则让之前的选择取消                
@@ -450,11 +452,21 @@ namespace miniStudio
 
         private void cBPro_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listControls != null)//确保listcontrols不为空
+            //if (listControls != null)//确保listcontrols不为空
+            if(dictControlswithTab!=null)
             {
                 propertyGrid1.SelectedObject = (object)listControls[cBPro.SelectedIndex];
+                //propertyGrid1.SelectedObject = dictControlswithTab.Where(a => { return a.Value.Name == cBPro.SelectedText; });
                 resetListRect(listControls[cBPro.SelectedIndex].Parent);
+                //resetListRect(listControls[cBPro.SelectedIndex].Parent);
                 addListRect(listControls[cBPro.SelectedIndex]);
+                tabWork.SelectedTab = (TabPage)(listControls[cBPro.SelectedIndex]).Parent;//同时选取其父页签
+
+                //Dictionary<Control,TabPage> temp = dictControlswithTab.Where(a => { return a.Value.Name == cBPro.SelectedText; });
+                //resetListRect(temp[);
+                //addListRect(temp.Keys);
+                //tabWork.SelectedTab = temp.Values;
+                //propertyGrid1.SelectedObject = temp.Keys;
             }
         }
       

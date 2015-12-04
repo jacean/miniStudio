@@ -7,6 +7,7 @@ namespace miniStudio
 {
     class gridState:controlState
     {
-
+        public int rowNumber { get; set; }
+        public int colNumber { get; set; }
     }
 }

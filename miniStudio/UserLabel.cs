@@ -6,10 +6,12 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Runtime.Serialization;
 
 namespace miniStudio
 {
     [DefaultEvent("Click")]
+    [Serializable]
     public partial class UserLabel : UserControl
     {
         public UserLabel()
