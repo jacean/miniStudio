@@ -48,11 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="function.cs" />
+    <Compile Include="projectSetting.cs" />
     <Compile Include="serializationHelper.cs" />
     <Compile Include="controlSize.cs" />
-    <Compile Include="controlState.cs" />
-    <Compile Include="dafaultSetting.cs" />
-    <Compile Include="gridState.cs" />
     <Compile Include="mainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -63,22 +62,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="mainForm.resx">
       <DependentUpon>mainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="tempForm.resx">
-      <DependentUpon>tempForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserGrid.resx">
-      <DependentUpon>UserGrid.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserLabel.resx">
-      <DependentUpon>UserLabel.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -96,48 +84,13 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="rectSelectedObjects.cs" />
+    <Compile Include="sqlConn.cs" />
     <Compile Include="tabState.cs" />
-    <Compile Include="tempForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="tempForm.Designer.cs">
-      <DependentUpon>tempForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="testForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="testForm.Designer.cs">
-      <DependentUpon>testForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserButton.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserButton.Designer.cs">
-      <DependentUpon>UserButton.cs</DependentUpon>
-    </Compile>
     <Compile Include="UserGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UserGrid.Designer.cs">
       <DependentUpon>UserGrid.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserGridIcon.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserGridIcon.Designer.cs">
-      <DependentUpon>UserGridIcon.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserLabel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserLabel.Designer.cs">
-      <DependentUpon>UserLabel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="aaa.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="aaa.Designer.cs">
-      <DependentUpon>aaa.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -161,20 +114,8 @@
     <EmbeddedResource Include="Resources\label2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="testForm.resx">
-      <DependentUpon>testForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserButton.resx">
-      <DependentUpon>UserButton.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserGridIcon.resx">
-      <DependentUpon>UserGridIcon.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="aaa.resx">
-      <DependentUpon>aaa.cs</DependentUpon>
+    <EmbeddedResource Include="UserGrid.resx">
+      <DependentUpon>UserGrid.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

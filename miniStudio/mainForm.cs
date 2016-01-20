@@ -66,6 +66,9 @@ namespace miniStudio
             //txt.LostFocus += new EventHandler(txt_LostFocus);
             treeView1.Controls.Add(txt);
             txt.Hide();
+
+            cBPro.AutoCompleteSource = AutoCompleteSource.ListItems;
+            cBPro.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
         }
 
       
@@ -391,9 +394,10 @@ namespace miniStudio
                 tempCtr.MouseUp += new MouseEventHandler(tempCtr_MouseUp);
                 listControls.Add(tempCtr);
                 dictControlswithTab.Add(tempCtr,(TabPage)sender);
+
                 updateCombox(tempCtr);
 
-                resetListRect((Control)sender);//新建控件，则让之前的选择取消                
+                resetListRect((Control)sender);//新建控件，则让之前的选择取消，选择当前控件                
                 addListRect(tempCtr);
 
                 //旧的控件和选择事件可以消失了
@@ -547,11 +551,12 @@ namespace miniStudio
 
         private void updateCombox(Control c)
         {
-            cBPro.Items.Clear();
-
+            //cBPro.Items.Clear();            
+            var l=listControls.Select(lc=>lc.Name);
+            cBPro.DataSource = l.ToList<string>();            
             for (int i = 0; i < listControls.Count; i++)
             {
-                cBPro.Items.Add(listControls[i].Name.ToString());
+                // cBPro.Items.Add(listControls[i].Name.ToString());
                 if (c == listControls[i])
                 {
                     cBPro.SelectedIndex = i;
@@ -811,10 +816,18 @@ namespace miniStudio
 
         private void 保存ToolStripMenuItem_Click(object sender, EventArgs e)
         {//建立项目文件
-            FolderBrowserDialog fd = new FolderBrowserDialog();
-            if (fd.ShowDialog() == DialogResult.OK)
-            { 
-                
+           
+        }
+
+        private void 新建ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fb = new FolderBrowserDialog();
+            fb.Description = "请选择项目路径";
+            if (fb.ShowDialog() == DialogResult.OK)
+            {
+                projectSetting.projectPath = fb.SelectedPath;
+                //弹出文本框，让输入项目名称
+                //projectSetting.projectName = "";
             }
         }
 

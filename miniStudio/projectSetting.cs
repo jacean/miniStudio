@@ -5,9 +5,9 @@ using System.Text;
 
 namespace miniStudio
 {
-    class gridState:controlState
+    class projectSetting
     {
-        public int rowNumber { get; set; }
-        public int colNumber { get; set; }
+        public static string projectPath = "";
+        public static string projectName = "";
     }
 }
