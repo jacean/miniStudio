@@ -39,6 +39,8 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.dg = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dg)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox1
@@ -63,7 +65,7 @@
             // 
             this.propertyGrid1.Location = new System.Drawing.Point(24, 84);
             this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(197, 248);
+            this.propertyGrid1.Size = new System.Drawing.Size(197, 131);
             this.propertyGrid1.TabIndex = 2;
             this.propertyGrid1.ToolbarVisible = false;
             // 
@@ -71,7 +73,7 @@
             // 
             this.propertyGrid2.Location = new System.Drawing.Point(227, 84);
             this.propertyGrid2.Name = "propertyGrid2";
-            this.propertyGrid2.Size = new System.Drawing.Size(197, 248);
+            this.propertyGrid2.Size = new System.Drawing.Size(197, 131);
             this.propertyGrid2.TabIndex = 3;
             this.propertyGrid2.ToolbarVisible = false;
             // 
@@ -79,7 +81,7 @@
             // 
             this.propertyGrid3.Location = new System.Drawing.Point(430, 84);
             this.propertyGrid3.Name = "propertyGrid3";
-            this.propertyGrid3.Size = new System.Drawing.Size(197, 248);
+            this.propertyGrid3.Size = new System.Drawing.Size(197, 131);
             this.propertyGrid3.TabIndex = 4;
             this.propertyGrid3.ToolbarVisible = false;
             // 
@@ -134,11 +136,21 @@
             this.comboBox3.Size = new System.Drawing.Size(121, 20);
             this.comboBox3.TabIndex = 10;
             // 
+            // dg
+            // 
+            this.dg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dg.Location = new System.Drawing.Point(24, 222);
+            this.dg.Name = "dg";
+            this.dg.RowTemplate.Height = 23;
+            this.dg.Size = new System.Drawing.Size(603, 150);
+            this.dg.TabIndex = 11;
+            // 
             // searchForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(650, 339);
+            this.ClientSize = new System.Drawing.Size(650, 377);
+            this.Controls.Add(this.dg);
             this.Controls.Add(this.comboBox3);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.comboBox1);
@@ -155,6 +167,7 @@
             this.Load += new System.EventHandler(this.searchForm_Load);
             this.Leave += new System.EventHandler(this.searchForm_Leave);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.searchForm_FormClosing);
+            ((System.ComponentModel.ISupportInitialize)(this.dg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -173,5 +186,6 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.DataGridView dg;
     }
 }

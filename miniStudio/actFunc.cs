@@ -258,6 +258,37 @@ namespace miniStudio
             }
             return ls;
         }
+
+        public static PropertyInfo[] getPropertyInfo(Type c)
+        {
+            PropertyInfo[] ps = null;
+            try
+            {
+                //Type type = typeof(c);
+                object obj = Activator.CreateInstance(c);
+                ps = c.GetProperties((BindingFlags.Public | BindingFlags.Instance));
+            }
+            catch (System.Exception ex)
+            {         	
+
+            }
+            return ps;
+        }
+        public static PropertyInfo[] getPropertyInfo<T>()
+        {
+            PropertyInfo[] ps = null;
+            try
+            {
+                Type type = typeof(T);
+                object obj = Activator.CreateInstance(type);
+                ps = type.GetProperties((BindingFlags.Public | BindingFlags.Instance));
+            }
+            catch (System.Exception ex)
+            {
+
+            }
+            return ps;
+        }
     }
 
     public static class ExtensionFunction
@@ -383,6 +414,10 @@ namespace miniStudio
         public property(Control c)
         {
             this.c = c;
+        }
+        public property()
+        {
+
         }
         Control c = new Control();
 
@@ -528,6 +563,18 @@ namespace miniStudio
             }
         }
 
-        public string Other { get; set; }
+        public string Other {
+            get
+            {
+                privateInfo p = (privateInfo)c.Tag;
+                return p.other;
+            }
+            set
+            {
+                privateInfo p = (privateInfo)c.Tag;
+                p.other = value;
+                c.Tag = p;
+            }
+        }
     }
 }
