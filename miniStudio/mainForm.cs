@@ -7,6 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Diagnostics;
+using System.IO;
+using System.Drawing.Design;
 
 namespace miniStudio
 {
@@ -17,39 +21,189 @@ namespace miniStudio
         {
             InitializeComponent();
         }
+        public mainForm(string flag)
+        {
+            InitializeComponent();
+            if (flag == "open")
+            {
+                loadProjectData("now");
+            }
+                       
+        }
+        public  void loadProjectData(string flag)
+        {//打开项目后根据项目位置来读取
+            //project-cookie
+            //      --config
+            //1、读取配置
+            //2、读取数据
+            //本地读取
+           
+            string backPath = projectSetting.projectPath + "\\cookie\\back\\";
+            string cookiePath = projectSetting.projectPath + "\\cookie\\";
+            string[] files = Directory.GetFiles(cookiePath); if (files.Count()==0) return;
+            string maxfile = "";
+            string minfile = "";
+
+            if (flag == "pre") { files = Directory.GetFiles(cookiePath); if (files.Count() == 0)return; maxfile = files.Max(); File.Move(maxfile, backPath + (new FileInfo(maxfile).Name)); }
+            if (flag == "now") { }
+            if (flag == "next") { files = Directory.GetFiles(backPath); if (files.Count() == 0)return; minfile =files.Min(); File.Move(minfile, cookiePath + (new FileInfo(minfile).Name)); }
+            files = Directory.GetFiles(cookiePath);
+             maxfile = files.Max();
+             tabWork.TabPages.Clear();
+            List<string> tpname = new List<string>();
+            using (StreamReader sr = new StreamReader(maxfile, Encoding.UTF8))
+            {
+                string l = "";
+                while ((l = sr.ReadLine()) != null)
+                {
+                    string[] p = l.Split('\b');
+                    if (p[4]=="System.Windows.Forms.TabPage")
+                    {
+                        if (!tpname.Contains(p[3]))
+                        {
+                            tpname.Add(p[3]);
+                            TabPage t = new TabPage();
+                            t.Name = p[3];
+                            t.Text = p[3];
+                            tabWork.TabPages.Add(t);
+                            addTabEvents(t);
+                        }   
+                    } 
+                    else
+                    {//暂时未有其他容器控件，有的话可以再加父容器属性，或是在other里用特定格式标记
+                    }
+                                    
+                    if (p[2] == "System.Windows.Forms.Button")
+                    {
+                        Button c = new Button();
+                        c.Name = p[1];
+                        c.Text = p[5];
+                        c.Left = p[6].toInt();
+                        c.Top = p[7].toInt();
+                        c.Width = p[8].toInt();
+                        c.Height = p[9].toInt();
+                        privateInfo i = new privateInfo();
+                        i.rowNum = p[10].toInt();
+                        i.colNum = p[11].toInt();
+                        i.comment = p[12];
+                        i.other = p[13];
+                        c.Tag = i;
+                        mainForm.dictControls.Add(c, p[14].toBoolean());
+                        addButEvents(c);
+                        foreach (TabPage e in tabWork.TabPages)
+                        {
+                            if (e.Name == p[3])
+                            {
+                                c.Parent = e;
+                                e.Controls.Add(c);
+                                break;
+                            }
+                        }
+                    }
+                    else if (p[2] == "System.Windows.Forms.Label")
+                    {
+                        Label c = new Label();
+                        c.Name = p[1];
+                        c.Text = p[5];
+                        c.Left = p[6].toInt();
+                        c.Top = p[7].toInt();
+                        c.Width = p[8].toInt();
+                        c.Height = p[9].toInt();
+                        privateInfo i = new privateInfo();
+                        i.rowNum = p[10].toInt();
+                        i.colNum = p[11].toInt();
+                        i.comment = p[12];
+                        i.other = p[13];
+                        c.Tag = i;
+                        mainForm.dictControls.Add(c, p[14].toBoolean());
+                        addLabEvents(c);
+                        foreach (TabPage e in tabWork.TabPages)
+                        {
+                            if (e.Name == p[3])
+                            {
+                                c.Parent = e;
+                                e.Controls.Add(c);
+                                break;
+                            }
+                        }
+                    }
+                    else if (p[2] == "System.Windows.Forms.GroupBox")
+                    {
+                        UserGrid c = new UserGrid();
+                        c.Name = p[1];
+                        c.Text = p[5];
+                        c.Left = p[6].toInt();
+                        c.Top = p[7].toInt();
+                        c.Width = p[8].toInt();
+                        c.Height = p[9].toInt();
+                        privateInfo i = new privateInfo();
+                        i.rowNum = p[10].toInt();
+                        i.colNum = p[11].toInt();
+                        i.comment = p[12];
+                        i.other = p[13];
+                        c.Tag = i;
+                        mainForm.dictControls.Add(c, p[14].toBoolean());
+                        addGridEvents(c);
+                        foreach (TabPage e in tabWork.TabPages)
+                        {
+                            if (e.Name == p[3])
+                            {
+                                c.Parent = e;
+                                e.Controls.Add(c);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            //数据库读取
+
+
+            //填充控件
+          
+
+            //记得刷新treeview
+        }
       
         Button uBut;
         Label uLab;
         UserGrid uGrid;
-        List<Control> listControls = new List<Control>();
-        Dictionary<Control, TabPage> dictControlswithTab = new Dictionary<Control, TabPage>();
+        DataTable pTable = new DataTable();
+        //List<Control> listControls = new List<Control>();
+        public static Dictionary<Control, bool> dictControls = new Dictionary<Control, bool>();
+        public List<Control> copyControl = new List<Control>();
+        public List<TabPage> tp = new List<TabPage>();  
         bool isDown = false;//在判断移动前先看是否选中
         bool moveDown = false;//是否正在移动控件
-        bool isMulSel = false;//标记是否多选
-        /// <summary>
-        /// 用来选择已经创建的控件，并修改属性;//listSelControl和dictRec成对出现
-        /// 在点击选中控件的时候改变，在新建控件的时候改变
-        /// </summary>
-         List<Control> listSelControl=new List<Control>();//
-        Dictionary<Control, List<Rectangle>> dictRec = new Dictionary<Control, List<Rectangle>>();//每个页签里的选中的矩形框
-
+       // bool isMulSel = false;//标记是否多选  
         Dictionary<string, TabPage> dictHideTab = new Dictionary<string, TabPage>();
 
         bool MouseIsDown = false;
-        Rectangle MouseRect = Rectangle.Empty;//画矩形框
+  
 
         int[] tempCount = new int[] { 0, 0, 0 };//label\button\grid的默认名字数量后缀
         int tabCount = 1;//标签页数
        
         TextBox txt = new TextBox();
-        
+        searchForm sf = new searchForm();        
        
         private void mainForm_Load(object sender, EventArgs e)
         {
+            this.Text = projectSetting.projectName+"      miniStudio";
+            
+            toolStripStatusLabel1.Text = "项目位置：" + projectSetting.projectPath;
+            this.KeyPreview = true;//用来捕获键盘事件
             timer1.Interval = 200;
             timer1.Enabled = true;
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
+            if (tabWork.TabPages.Count==0)
+            {
+                TabPage t = new TabPage();
+                t.Name = "tabPage1";
+                t.Text = "tabPage1";
+                tabWork.TabPages.Add(t);
+            }             
             foreach (TabPage item in tabWork.TabPages)
             {
                 addTabEvents(item);
@@ -67,12 +221,23 @@ namespace miniStudio
             treeView1.Controls.Add(txt);
             txt.Hide();
 
+            sf.LostFocus += new EventHandler(sf_LostFocus);
             cBPro.AutoCompleteSource = AutoCompleteSource.ListItems;
             cBPro.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            refreshProperty();
+            this.Refresh();
         }
 
-      
+        void sf_LostFocus(object sender, EventArgs e)
+        {
+            sf.Hide();
+        }
 
+        private void toolStripStatusLabel1_DoubleClick(object sender, EventArgs e)
+        {           
+            System.Diagnostics.Process.Start("explorer.exe",(new DirectoryInfo(projectSetting.projectPath)).FullName);
+        }
+  
         void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             TreeNode tn = e.Node;
@@ -99,18 +264,17 @@ namespace miniStudio
             
         }
 
-        #region 控件选择
+        #region 控件列表的控件，从这里往外拖
 
         Control selCtr = null;
         Control tempCtr = null;
         string ctrType = "";
+
         bool butSelected = false;
-
-
         private void ctrBut_Click(object sender, EventArgs e)
         {
 
-            selectControl(sender);
+            selectBaseControl(sender);
 
 
             if (butSelected)
@@ -133,12 +297,13 @@ namespace miniStudio
                 ctrType = "But";
             }
             updateWatch();
+            refreshProperty();
         }
         bool labSelected = false;
         private void ctrLab_Click(object sender, EventArgs e)
         {
 
-            selectControl(sender);
+            selectBaseControl(sender);
 
             if (labSelected)
             {
@@ -163,7 +328,7 @@ namespace miniStudio
         bool gridSelected = false;
         private void ctrGrid_Click(object sender, EventArgs e)
         {
-            selectControl(sender);
+            selectBaseControl(sender);
 
 
             if (gridSelected)
@@ -185,7 +350,7 @@ namespace miniStudio
             }
             updateWatch();
         }
-        private void selectControl(object sender)
+        private void selectBaseControl(object sender)
         {
             if (selCtr != null && selCtr != (Control)sender)
             { //取消上个控件的选中，并选中本控件
@@ -198,15 +363,15 @@ namespace miniStudio
 
             }
         }
-        private void endSelectControl()
+        private void endSelectBaseControl()
         { //完成了控件的拖放
             foreach (Control ctr in grpCtr.Controls[0].Controls)
-            {
+            {//应当是可以直接用selctr的
                 if (ctr == selCtr)
                 { (ctr as Button).PerformClick(); break; }
                 else continue;
             }
-            tempCtr = new Control();
+            tempCtr = null;
         }
 
         /// <summary>
@@ -219,17 +384,20 @@ namespace miniStudio
         }
         #endregion
 
-        #region 控件添加事件
-        void tempCtr_MouseUp(object sender, MouseEventArgs e)
+        #region tab里的控件需要添加的点击事件
+        //移动控件所需
+        void ctr_MouseUp(object sender, MouseEventArgs e)
         {
             if (tempCtr == null)
             {
                 isDown = false;
                 moveDown = false; this.Refresh();
             }
+            refreshProperty();
+            
         }
 
-        void tempCtr_MouseMove(object sender, MouseEventArgs e)
+        void ctr_MouseMove(object sender, MouseEventArgs e)
         {
             if (tempCtr == null)
             {
@@ -241,47 +409,74 @@ namespace miniStudio
             }
         }
 
-        void tempCtr_MouseDown(object sender, MouseEventArgs e)
+        void ctr_MouseDown(object sender, MouseEventArgs e)
         {
             if (tempCtr == null)
             {
                 isDown = true;
             }
+            refreshProperty();
         }
-
+        void ctr_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                Control c=(Control)sender;
+                actFunc.removeItem(c);
+                dictControls.Remove(c);
+                c.Parent.Controls.Remove(c);               
+                c.Dispose();
+            }
+        }
+        
         void ctr_Click(object sender, EventArgs e)
         {
-            if (Control.ModifierKeys == Keys.Control)
-            { isMulSel = true; }
-            else
-            { isMulSel = false; }
-            if (!isMulSel)
+            Control control=(Control)sender;
+           
+            if (!actFunc.isMulSel())
             {
-                switch (((Control)sender).GetType().ToString())
+                switch (control.GetType().ToString())
                 {
-                    case "System.Windows.Forms.Button":
-                        propertyGrid1.SelectedObject = sender;
+                    case "System.Windows.Forms.Button":                       
                         label2.Text = "but";
                         break;
 
-                    case "System.Windows.Forms.Label": label2.Text = "lab"; propertyGrid1.SelectedObject = sender; break;
-                    case "System.Windows.Forms.GroupBox": label2.Text = "grid"; propertyGrid1.SelectedObject = ((Control)sender).Parent; break;
+                    case "System.Windows.Forms.Label": label2.Text = "lab";  break;
+                    case "System.Windows.Forms.GroupBox": label2.Text = "grid";break;
 
                 }
-
-                resetListRect(((Control)sender).Parent);
-                addListRect((Control)sender);
-
+                //单选的话无论如何都得选中
+                
+                
+                actFunc.clearAllSelectState();
+                dictControls[control] = true;
+                actFunc.updateItem(control, true);
+                
+                
             }
             else
             {
-                addListRect((Control)sender);//同时，既加rec，也加空间
-
+                //多选的话选变不选，不选变选
+                if (dictControls[control] == true)
+                {
+                    dictControls[control] = false;
+                    actFunc.updateItem(control, false);
+                    
+                }
+                else
+                {
+                    dictControls[control] = true;
+                    actFunc.updateItem(control, true);
+                }
+               
             }
-            if (listSelControl.Count > 0) updateCombox(listSelControl[0]);//在这个里边会调整属性对象，所以需要在后边强制更改一下
-            propertyGrid1.SelectedObjects = (Object[])listSelControl.ToArray();
 
+            //if (sqlFunc.getItemCount() > 0) updateCombox(listSelControl[0]);//在这个里边会调整属性对象，所以需要在后边强制更改一下
+            //propertyGrid1.SelectedObjects = (Object[])listSelControl.ToArray();
+            refreshProperty();
+            this.Refresh();
         }
+               
         #endregion   
    
    
@@ -294,46 +489,46 @@ namespace miniStudio
                 Control tab = (Control)sender;
                 tab.Capture = false;
                 Cursor.Clip = Rectangle.Empty;
-                MouseIsDown = false;
-                DrawRectangle(tab);
-                listSelControl.Clear();
-                label3.Text = "当前选中控件:";
-                dictRec[((Control)sender)].Clear();//把之前的选择清掉
-                if (MouseRect.Width < 0)
+                controlFunc.DrawRectangle(tab);
+                if (controlFunc.MouseRect.Height==0&&controlFunc.MouseRect.Width==0)
                 {
-                    MouseRect.X = MouseRect.X + MouseRect.Width;
-                    MouseRect.Width = MouseRect.Width * (-1);
-                }
-                if (MouseRect.Height < 0)
-                {
-                    MouseRect.Y = MouseRect.Y + MouseRect.Height;
-                    MouseRect.Height = MouseRect.Height * (-1);
-                }
-                foreach (Control ct in tab.Controls)
-                {
-
-                    if (MouseRect.IntersectsWith(ct.Bounds))
-                    //if (MouseRect.Contains(ct.Bounds))
+                    actFunc.clearAllSelectState();//点在空白地方，则让之前的选择取消
+                } 
+                else
+                {         
+                    label3.Text = "当前选中控件:";
+                    //dictRec[((Control)sender)].Clear();//把之前的选择清掉
+                    if (controlFunc.MouseRect.Width < 0)
                     {
-                        addListRect(ct);
+                        controlFunc.MouseRect.X = controlFunc.MouseRect.X + controlFunc.MouseRect.Width;
+                        controlFunc.MouseRect.Width = controlFunc.MouseRect.Width * (-1);
                     }
+                    if (controlFunc.MouseRect.Height < 0)
+                    {
+                        controlFunc.MouseRect.Y = controlFunc.MouseRect.Y + controlFunc.MouseRect.Height;
+                        controlFunc.MouseRect.Height = controlFunc.MouseRect.Height * (-1);
+                    }
+                    if (!actFunc.isMulSel()) actFunc.clearAllSelectState();
+                    foreach (Control ct in tab.Controls)
+                    {
+                        if (controlFunc.MouseRect.IntersectsWith(ct.Bounds))
+                        //if (controlFunc.MouseRect.Contains(ct.Bounds))
+                        {
+                            dictControls[ct] = true;
+                            actFunc.updateItem(ct, true);
+                        }
+                    }
+                    
                 }
-
-                MouseRect = Rectangle.Empty;
-
+                controlFunc.MouseRect = Rectangle.Empty;
+                MouseIsDown = false;
             }
-
-
-        }
-
-       
-        void tab_Click(object sender, EventArgs e)
-        {
-            resetListRect((Control)sender);//点在空白地方，则让之前的选择取消
+           
             this.Invalidate();
             this.Refresh();
-
+            refreshProperty();
         }
+
 
         void tab_MouseLeave(object sender, EventArgs e)
         {
@@ -343,74 +538,48 @@ namespace miniStudio
             { //当在容器里徘徊后无处安置返回时，要记得取消new的控件
                 tab.Controls.Remove(tempCtr);
             }
+            
         }
 
 
         void tab_MouseDown(object sender, MouseEventArgs e)
         {
-            TabPage tab = (TabPage)sender;
-            controlSize cs = new controlSize(this);
+            TabPage tab = (TabPage)sender;            
             if (tempCtr != null)
             {//临时空间不为null则是在新建控件
                 tempCtr.Location = new Point(e.Location.X, e.Location.Y);//直接就是相对于当前空间的坐标
-
-
                 if (ctrType == "Lab")
                 {
-                    (tempCtr as Label).Name = "Lab_" + tempCount[0]++.ToString();
-                    (tempCtr as Label).Click += new EventHandler(ctr_Click);
-
-                    (tempCtr as Label).MouseDown += new MouseEventHandler(cs.MyMouseDown);
-                    (tempCtr as Label).MouseMove += new MouseEventHandler(cs.MyMouseMove);
-                    (tempCtr as Label).MouseLeave += new EventHandler(cs.MyMouseLeave);
-
+                    addLabEvents((Label)tempCtr);
+                    (tempCtr as Label).Name = "Lab_" + tempCount[0].ToString();
                 }
                 else if (ctrType == "But")
                 {
-                    (tempCtr as Button).Name = "But_" + tempCount[1]++.ToString();
-                    (tempCtr as Button).Click += new EventHandler(ctr_Click);
-
-                    (tempCtr as Button).MouseDown += new MouseEventHandler(cs.MyMouseDown);
-                    (tempCtr as Button).MouseMove += new MouseEventHandler(cs.MyMouseMove);
-                    (tempCtr as Button).MouseLeave += new EventHandler(cs.MyMouseLeave);
-
-
+                    addButEvents((Button)tempCtr);
+                    (tempCtr as Button).Name = "But_" + tempCount[1].ToString();
                 }
                 else if (ctrType == "Grid")
                 {
-                    (tempCtr as UserGrid).Name = "Grid_" + tempCount[2]++.ToString();
-                    (tempCtr as UserGrid).UserClick += new UserGrid.GridClick(ctr_Click);
-
-                    (tempCtr as UserGrid).UserMouseDown += new UserGrid.GridMouseEvent(cs.MyMouseDown);
-                    (tempCtr as UserGrid).UserMouseMove += new UserGrid.GridMouseEvent(cs.MyMouseMove);
-                    (tempCtr as UserGrid).UserLeave += new UserGrid.GridLeave(cs.MyMouseLeave);
-
-                    (tempCtr as UserGrid).UserMouseDown += new UserGrid.GridMouseEvent(tempCtr_MouseDown);
-                    (tempCtr as UserGrid).UserMouseMove += new UserGrid.GridMouseEvent(tempCtr_MouseMove);
-                    (tempCtr as UserGrid).UserMouseUp += new UserGrid.GridMouseEvent(tempCtr_MouseUp);
+                    addGridEvents((UserGrid)tempCtr);
+                    (tempCtr as UserGrid).Name = "Grid_" + tempCount[2].ToString();         
                 }
-                tempCtr.MouseDown += new MouseEventHandler(tempCtr_MouseDown);
-                tempCtr.MouseMove += new MouseEventHandler(tempCtr_MouseMove);
-                tempCtr.MouseUp += new MouseEventHandler(tempCtr_MouseUp);
-                listControls.Add(tempCtr);
-                dictControlswithTab.Add(tempCtr,(TabPage)sender);
-
+                actFunc.clearAllSelectState();
+                privateInfo p = new privateInfo();
+                tempCtr.Tag = p;
+                dictControls.Add(tempCtr,true);//新添加的控件默认被选中               
+                actFunc.addItem(tempCtr);//将新控件添加到控件list、本地缓存、数据库中                   
                 updateCombox(tempCtr);
-
-                resetListRect((Control)sender);//新建控件，则让之前的选择取消，选择当前控件                
-                addListRect(tempCtr);
-
                 //旧的控件和选择事件可以消失了
-                endSelectControl();
+                endSelectBaseControl();
                 tempCtr = null;
-
             }
             else
             {
                 MouseIsDown = true;
-                DrawStart(e.Location, tab);
+                controlFunc.DrawStart(e.Location, tab);
             }
-
+            this.Refresh();
+            refreshProperty();
         }
 
         void tab_MouseMove(object sender, MouseEventArgs e)
@@ -425,7 +594,7 @@ namespace miniStudio
                 tab.Cursor = Cursors.Default;
                 //用来判断是否画矩形框
                 if (MouseIsDown)
-                    ResizeToRectangle(e.Location,tab);
+                    controlFunc.ResizeToRectangle(e.Location,tab);
             }
         }
 
@@ -444,11 +613,26 @@ namespace miniStudio
             if (!moveDown)
             {
                 Graphics g = ((Control)sender).CreateGraphics();
-                foreach (Rectangle r in dictRec[(Control)sender])
+                foreach (Control c in dictControls.Keys)
                 {
-                    ControlPaint.DrawBorder(g, r, Color.Gray, ButtonBorderStyle.Dashed);
+                    if (c.Parent!=(Control)sender)
+                    {
+                        continue;
+                    }
+                    if (dictControls[c] == true)
+                    {
+                        Rectangle rect = new Rectangle();
+                        rect = c.Bounds;
+                        //rect.Location = s.Parent.PointToScreen(rect.Location);
+                        rect.X -= 3;
+                        rect.Y -= 3;
+                        rect.Height += 6;
+                        rect.Width += 6;
+                        ControlPaint.DrawBorder(g, rect, Color.Gray, ButtonBorderStyle.Dashed);
+                    }
                 }
             }
+            
 
         }
         #endregion
@@ -457,21 +641,13 @@ namespace miniStudio
         private void cBPro_SelectedIndexChanged(object sender, EventArgs e)
         {
             //if (listControls != null)//确保listcontrols不为空
-            if(dictControlswithTab!=null)
-            {
-                propertyGrid1.SelectedObject = (object)listControls[cBPro.SelectedIndex];
-                //propertyGrid1.SelectedObject = dictControlswithTab.Where(a => { return a.Value.Name == cBPro.SelectedText; });
-                resetListRect(listControls[cBPro.SelectedIndex].Parent);
-                //resetListRect(listControls[cBPro.SelectedIndex].Parent);
-                addListRect(listControls[cBPro.SelectedIndex]);
-                tabWork.SelectedTab = (TabPage)(listControls[cBPro.SelectedIndex]).Parent;//同时选取其父页签
-
-                //Dictionary<Control,TabPage> temp = dictControlswithTab.Where(a => { return a.Value.Name == cBPro.SelectedText; });
-                //resetListRect(temp[);
-                //addListRect(temp.Keys);
-                //tabWork.SelectedTab = temp.Values;
-                //propertyGrid1.SelectedObject = temp.Keys;
-            }
+            //if(dictControlswithTab!=null)
+            //{//这里需要有跟随变动
+            //    //propertyGrid1.SelectedObject = (object)listControls[cBPro.SelectedIndex];               
+            //    //resetListRect(listControls[cBPro.SelectedIndex].Parent);  
+            //    //addListRect(listControls[cBPro.SelectedIndex]);
+            //    //tabWork.SelectedTab = (TabPage)(listControls[cBPro.SelectedIndex]).Parent;//同时选取其父页签
+            //}
         }
       
         /// 检测鼠标坐标       
@@ -479,137 +655,99 @@ namespace miniStudio
         {
             Point p = this.PointToClient(Cursor.Position);            
             label1.Text = p.ToString();
+            label5.Text = MouseIsDown.ToString();
            
 
         }
 
       
         #region 功能函数
-        #region 矩形选框函数
-        private void ResizeToRectangle(Point p, Control tab)
-        {
-            DrawRectangle(tab);
-            MouseRect.Width = p.X - MouseRect.Left;
-            MouseRect.Height = p.Y - MouseRect.Top;
-            DrawRectangle(tab);
-        }
-        private void DrawRectangle(Control tab)
-        {
-            Rectangle rect = tab.RectangleToScreen(MouseRect);
-            ControlPaint.DrawReversibleFrame(rect, Color.White, FrameStyle.Dashed);
-        }
-        private void DrawStart(Point StartPoint, Control tab)
-        {
-            tab.Capture = true;
-            Cursor.Clip = tab.RectangleToScreen(new Rectangle(0, 0, tab.Width, tab.Height));
-
-            MouseRect = new Rectangle(StartPoint.X, StartPoint.Y, 0, 0);
-        }
-        #endregion
-
-        #region 选中控件操作函数
-        private void resetListRect(Control tab)
-        {
-            listSelControl.Clear();
-            dictRec[tab].Clear();//因为是单选
-            if (listControls.Count>0) propertyGrid1.SelectedObject = listControls[listControls.Count - 1];
-        }
-
-        private void addListRect(Control s)
-        {//画虚线,重复选择则取消
-            Rectangle rect = new Rectangle();
-            rect = s.Bounds;
-            //rect.Location = s.Parent.PointToScreen(rect.Location);
-            rect.X -= 3;
-            rect.Y -= 3;
-            rect.Height += 6;
-            rect.Width += 6;
-            label3.Text = "当前已选中:";
-            if (dictRec[s.Parent].Contains(rect))
-            {
-                dictRec[s.Parent].Remove(rect);
-                listSelControl.Remove(s);
-            }
-            else
-            {
-                dictRec[s.Parent].Add(rect);//因为没有容器控件，所以敢这样
-                listSelControl.Add(s);
-            }
-            foreach (var item in listSelControl)
-            {
-                label3.Text += item.Name + "、";
-
-            }
-            propertyGrid1.SelectedObjects = (Object[])listSelControl.ToArray();
-
-            this.Refresh();
-
-
-        }
-
-        #endregion
-
         private void updateCombox(Control c)
         {
             //cBPro.Items.Clear();            
-            var l=listControls.Select(lc=>lc.Name);
+            var l=dictControls.Keys.Select(lc=>lc.Name);
             cBPro.DataSource = l.ToList<string>();            
-            for (int i = 0; i < listControls.Count; i++)
-            {
-                // cBPro.Items.Add(listControls[i].Name.ToString());
-                if (c == listControls[i])
-                {
-                    cBPro.SelectedIndex = i;
-                    // propertyGrid1.SelectedObject = (object)listControls[i];
-
-                }
-            }
+            //设置combox的选中，想来是不是可以把combox和控件直接关联，选控件就是combox的data，不用通过其他转换，记得试试
+            //for (int i = 0; i < listControls.Count; i++)
+            //{ //              
+            //    if (c == listControls[i])
+            //    {
+            //        cBPro.SelectedIndex = i;
+            //    }
+            //}
         }
 
         private void updateTreeview()
         {
-                       
+            treeView1.BeginUpdate();
+            bool flag = false;
             treeView1.Nodes.Clear();
             TreeNode root = new TreeNode("miniStudio");
+            TreeNode currentProjectNode = new TreeNode();
             foreach (Control item in tabWork.TabPages)
             {
                 TreeNode child = new TreeNode(item.Name);
-                root.Nodes.Add(child);
+                child.SelectedImageIndex = 2;
+                child.ImageIndex = 2;
+                currentProjectNode.Nodes.Add(child);
                 child.ContextMenuStrip = rightMenu;
             }
-            root.Nodes.Add(new TreeNode("newTab"));
-            treeView1.Nodes.Add(root);
+            currentProjectNode.Nodes.Add(new TreeNode("newTab",3,3));
 
-            TreeNode hideRoot = new TreeNode("hideTab");
+            TreeNode hideRoot = new TreeNode("hideTab",4,4);
             foreach (var item in dictHideTab)
             {
                 TreeNode t = new TreeNode(item.Key);
                 hideRoot.Nodes.Add(t);
                 t.ContextMenuStrip = hideMenu;
             }
-            treeView1.Nodes.Add(hideRoot);
+            currentProjectNode.Nodes.Add(hideRoot);
+            currentProjectNode.Text = projectSetting.projectName;
+            currentProjectNode.Name = projectSetting.projectPath;
+            currentProjectNode.SelectedImageIndex = 1;
+            currentProjectNode.ImageIndex = 1;
+            root.Nodes.Add(currentProjectNode);
 
-            treeView1.ExpandAll();
-            
-            foreach (TreeNode n in treeView1.Nodes)
+            List<string[]> ls = actFunc.getProjectList();
+            if (ls!=null&&ls.Count > 0)
             {
-                foreach (TreeNode m in n.Nodes)
-                {                   
-                    if (m.Text == tabWork.SelectedTab.Name)
+                foreach (string[] sa in ls)
+                {//历史中的其他项目文件
+                    if (sa[0] == projectSetting.projectPath)
                     {
-                        treeView1.SelectedNode = m;
+                        flag = true;
+                        continue;
+                    }
+                    TreeNode pnode = new TreeNode();
+                    pnode.Text = sa[1];
+                    pnode.Name = sa[0];
+                    pnode.SelectedImageIndex = 1;
+                    pnode.ImageIndex = 1;
+                    root.Nodes.Add(pnode);
+                }
+            }
+            if (!flag) actFunc.updateProjectList(projectSetting.projectPath, projectSetting.projectName);
+            root.SelectedImageIndex = 0;
+            root.ImageIndex = 0;
+            treeView1.Nodes.Add(root);
+            currentProjectNode.ExpandAll();
+            if (tabWork.TabPages.Count>0) {
+                foreach (TreeNode n in currentProjectNode.Nodes)
+                {
+                    if (n.Text == tabWork.SelectedTab.Name)
+                    {
+                        treeView1.SelectedNode = n;
                     }
                 }
-                
             }
-
+            treeView1.EndUpdate();
             this.Refresh();
            
         }
 
         private void addTabEvents(TabPage tab)
         {
-                tab.Click += new EventHandler(tab_Click);
+               
                 tab.MouseEnter += new EventHandler(tab_MouseEnter);
                 tab.MouseMove += new MouseEventHandler(tab_MouseMove);
                 tab.MouseDown += new MouseEventHandler(tab_MouseDown);
@@ -618,9 +756,54 @@ namespace miniStudio
                 tab.Paint += new PaintEventHandler(tab_Paint);
                
                 //添加选择矩形选中控件事件
-                tab.MouseUp += new MouseEventHandler(tab_MouseUp);
+                tab.MouseUp += new MouseEventHandler(tab_MouseUp);               
+        }
+        private void addButEvents(Button b)
+        {
+            controlSize cs = new controlSize(this);
+           // b.Name = "But_" + tempCount[0]++.ToString();
+            tempCount[1]++;
+            b.Click += new EventHandler(ctr_Click);
 
-                dictRec.Add(tab, new List<Rectangle>());
+            b.MouseDown += new MouseEventHandler(cs.MyMouseDown);
+            b.MouseMove += new MouseEventHandler(cs.MyMouseMove);
+            b.MouseLeave += new EventHandler(cs.MyMouseLeave);
+
+            b.MouseDown += new MouseEventHandler(ctr_MouseDown);
+            b.MouseMove += new MouseEventHandler(ctr_MouseMove);
+            b.MouseUp += new MouseEventHandler(ctr_MouseUp);
+            //keyDown事件只有button有，label和grid没有
+            b.KeyDown += new KeyEventHandler(ctr_KeyDown);
+        }
+        private void addLabEvents(Label b)
+        {
+            controlSize cs = new controlSize(this);
+           // b.Name = "But_" + tempCount[0]++.ToString();
+            tempCount[0]++;
+            b.Click += new EventHandler(ctr_Click);
+
+            b.MouseDown += new MouseEventHandler(cs.MyMouseDown);
+            b.MouseMove += new MouseEventHandler(cs.MyMouseMove);
+            b.MouseLeave += new EventHandler(cs.MyMouseLeave);
+
+            b.MouseDown += new MouseEventHandler(ctr_MouseDown);
+            b.MouseMove += new MouseEventHandler(ctr_MouseMove);
+            b.MouseUp += new MouseEventHandler(ctr_MouseUp);
+        }
+        private void addGridEvents(UserGrid b)
+        {
+            controlSize cs = new controlSize(this);
+            //b.Name = "Grid_" + tempCount[2]++.ToString();
+            tempCount[2]++;
+            b.UserClick += new UserGrid.GridClick(ctr_Click);
+
+            b.UserMouseDown += new UserGrid.GridMouseEvent(cs.MyMouseDown);
+            b.UserMouseMove += new UserGrid.GridMouseEvent(cs.MyMouseMove);
+            b.UserLeave += new UserGrid.GridLeave(cs.MyMouseLeave);
+
+            b.UserMouseDown += new UserGrid.GridMouseEvent(ctr_MouseDown);
+            b.UserMouseMove += new UserGrid.GridMouseEvent(ctr_MouseMove);
+            b.UserMouseUp += new UserGrid.GridMouseEvent(ctr_MouseUp);
         }
         #endregion
 
@@ -777,6 +960,7 @@ namespace miniStudio
                     treeView1.SelectedNode = n;
                 }
             }
+            this.Refresh();
         }
 
 
@@ -814,23 +998,167 @@ namespace miniStudio
 
         }
 
-        private void 保存ToolStripMenuItem_Click(object sender, EventArgs e)
-        {//建立项目文件
-           
-        }
+
 
         private void 新建ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Process.Start("miniStudio.exe", "new");
+        }
+
+        private void 打开ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            Process.Start("miniStudio.exe", "open");
+        }
+        private void 另存为ToolStripMenuItem_Click(object sender, EventArgs e)
+        {//复制当前项目至指定路径，同时修改配置里的path
+            string newPath = "";
             FolderBrowserDialog fb = new FolderBrowserDialog();
-            fb.Description = "请选择项目路径";
             if (fb.ShowDialog() == DialogResult.OK)
             {
-                projectSetting.projectPath = fb.SelectedPath;
-                //弹出文本框，让输入项目名称
-                //projectSetting.projectName = "";
+                newPath= fb.SelectedPath.ToString();
+                oftenTools.CopyDirectory(projectSetting.projectPath, newPath);
+                File.Move(newPath + "\\" + projectSetting.projectName + "\\config.ini", newPath + "\\" + projectSetting.projectName + "\\config_old.ini");
+                using (StreamWriter sw = new StreamWriter(newPath+"\\"+projectSetting.projectName + "\\config.ini", false, Encoding.UTF8))
+                {
+                    sw.WriteLine(projectSetting.projectName);
+                    sw.WriteLine(newPath);
+                    sw.WriteLine(projectSetting.projectUser);
+                    sw.WriteLine(projectSetting.projectSQL);
+                    sw.WriteLine(newPath+"\\"+projectSetting.projectName);
+                }
+                MessageBox.Show("项目已另存为:" + newPath + "\\" + projectSetting.projectName);
+            }
+        }
+        private void fillProperty()
+        {//表格填充的方法放弃，使用自定义property来显示属性
+            
+            if (!actFunc.isMulSel())
+            {
+                pTable.Clear();
+                Control c = actFunc.getSelectedList()[0];
+                pTable.Columns.Add("Key", System.Type.GetType("System.String"));
+                pTable.Columns.Add("Value", System.Type.GetType("System.String"));
+                DataRow dr = pTable.NewRow();
+                dr["Key"] = "Name";
+                dr["value"] = c.Name;
+            } 
+            else
+            {
+                List<Control> lc = actFunc.getSelectedList();
             }
         }
 
+        private void refreshProperty()
+        {
+            List<Control> lc=actFunc.getSelectedList();
+            if (lc.Count==0)
+            {
+                return;
+            } 
+            else if(lc.Count==1)
+            {
+                propertyGrid1.SelectedObject=new property(lc[0]);
+                
+            }else
+            {
+                List<property> ps=new List<property>();
+                foreach(Control c in lc)
+                {
+                    ps.Add(new property(c));
+                }
+                propertyGrid1.SelectedObjects = ps.ToArray();
+            }          
+            BindingSource bs = new BindingSource();
+            bs.DataSource = lc.Select(l => new
+            {
+                Name = l.Name,
+                Text = l.Text
+            });
+            cBPro.DataSource = bs;
+            cBPro.DisplayMember = "Name";
+            cBPro.ValueMember = "Name";
+            cBPro.AutoCompleteSource = AutoCompleteSource.ListItems;
+            cBPro.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cBPro.SelectedIndex = 0;
+        }
 
+        private void mainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (!e.Control) return;
+            switch (e.KeyCode)
+            {
+                case Keys.C:
+                    //已经粘贴在了原本的地方，，需要改进下让别立刻粘贴
+                    label5.Text = "复制";
+                    copyControl.Clear();
+                    foreach (Control c in actFunc.getSelectedList())
+                    {
+                        copyControl.Add(c.switchTypetoClone());
+                    }
+                    for (int i = 0; i < copyControl.Count; i++)
+                    {
+                        copyControl[i].Parent.Controls.Remove(copyControl[i]);
+                    }
+                    break;
+                case Keys.V:
+                    //选定特定tab后粘贴，控件集中到这
+                    if (!tabWork.Focus()) { label5.Text = "未能粘贴"; return; }
+                    else
+                    {
+                        actFunc.clearAllSelectState();
+                        TabPage t = tabWork.SelectedTab;
+                        for (int i=0;i<copyControl.Count;i++)
+                        {
+                            t.Controls.Add(copyControl[i]);                            
+                            dictControls.Add(copyControl[i], true);
+                        }
+                        label5.Text = "粘贴成功";                        
+                    }
+                    break;
+                case Keys.Z:
+                    if (!e.Shift) loadProjectData("pre");
+                    else { loadProjectData("next"); }
+                    break;
+                case Keys.F:                    
+                    sf.Show();
+                    sf.BringToFront();
+                    break;
+                 
+            }
+        }
+
+        private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Name != projectSetting.projectPath)
+            {
+                if (MessageBox.Show("是否打开新项目" + e.Node.Text,"消息",MessageBoxButtons.OKCancel) == DialogResult.OK)
+                {
+                    Process.Start("miniStudio.exe", "open "+e.Node.Name);
+                }
+
+            }
+        }
+
+        
     }
+
+    public class MyUITypeEditor : UITypeEditor
+    {
+        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+        {
+            stringEditor se = new stringEditor();
+            se.comment = (string)value;
+            if (se.ShowDialog() == DialogResult.OK)
+            {
+                return se.comment;
+            }
+            return value;
+        }
+
+        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+        {
+            return UITypeEditorEditStyle.Modal;
+        }
+    } 
 }

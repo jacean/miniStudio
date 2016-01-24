@@ -14,13 +14,25 @@ namespace miniStudio
 {
     class sqlConn
     {
-
-
+        
         private string _connString = null;
         public string _DBType = null;
 
         public SqlConnection cn_Sql = null;
         public SqlTransaction tx_Sql = null;
+
+
+        public void sqlconn(string DBString)
+        {
+            _connString = DBString;
+           
+                if (cn_Sql == null)
+                {
+                    cn_Sql = new SqlConnection(_connString);
+                    cn_Sql.Open();
+                }
+           
+        }
 
         public void  sqlconn(string DBString, string DBType)
         {
@@ -35,6 +47,7 @@ namespace miniStudio
                 }
             }
         }
+
         public void Close()
         {
             if (cn_Sql != null)

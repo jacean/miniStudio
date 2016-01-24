@@ -48,7 +48,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="function.cs" />
+    <Compile Include="actFunc.cs" />
+    <Compile Include="controlFunc.cs" />
+    <Compile Include="searchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="searchForm.Designer.cs">
+      <DependentUpon>searchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="sqlFunc.cs" />
     <Compile Include="projectSetting.cs" />
     <Compile Include="serializationHelper.cs" />
     <Compile Include="controlSize.cs" />
@@ -85,7 +93,25 @@
     </Compile>
     <Compile Include="rectSelectedObjects.cs" />
     <Compile Include="sqlConn.cs" />
-    <Compile Include="tabState.cs" />
+    <Compile Include="oftenTools.cs" />
+    <Compile Include="startForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="startForm.Designer.cs">
+      <DependentUpon>startForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="stringEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="stringEditor.Designer.cs">
+      <DependentUpon>stringEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="test.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="test.Designer.cs">
+      <DependentUpon>test.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -113,6 +139,22 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\label2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="searchForm.resx">
+      <DependentUpon>searchForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="startForm.resx">
+      <DependentUpon>startForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="stringEditor.resx">
+      <DependentUpon>stringEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="test.resx">
+      <DependentUpon>test.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UserGrid.resx">
       <DependentUpon>UserGrid.cs</DependentUpon>

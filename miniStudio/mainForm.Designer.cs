@@ -29,20 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.项目ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.新建ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.打开ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.保存ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.另存为ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.项目ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabWork = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.grpCtr = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.ctrLab = new System.Windows.Forms.Button();
@@ -59,6 +57,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.rightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -68,10 +67,11 @@
             this.hideMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.显示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.tabWork.SuspendLayout();
             this.grpCtr.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.grpPro.SuspendLayout();
@@ -80,149 +80,122 @@
             this.panel1.SuspendLayout();
             this.rightMenu.SuspendLayout();
             this.hideMenu.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.文件ToolStripMenuItem,
-            this.编辑ToolStripMenuItem,
             this.项目ToolStripMenuItem,
+            this.编辑ToolStripMenuItem,
             this.帮助ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(674, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(790, 25);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // 文件ToolStripMenuItem
+            // 项目ToolStripMenuItem
             // 
-            this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.项目ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.新建ToolStripMenuItem,
             this.打开ToolStripMenuItem,
-            this.保存ToolStripMenuItem,
+            this.另存为ToolStripMenuItem,
             this.退出ToolStripMenuItem});
-            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
-            this.文件ToolStripMenuItem.Text = "文件";
+            this.项目ToolStripMenuItem.Name = "项目ToolStripMenuItem";
+            this.项目ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.项目ToolStripMenuItem.Text = "项目";
             // 
             // 新建ToolStripMenuItem
             // 
             this.新建ToolStripMenuItem.Name = "新建ToolStripMenuItem";
-            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.新建ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.新建ToolStripMenuItem.Text = "新建";
             this.新建ToolStripMenuItem.Click += new System.EventHandler(this.新建ToolStripMenuItem_Click);
             // 
             // 打开ToolStripMenuItem
             // 
             this.打开ToolStripMenuItem.Name = "打开ToolStripMenuItem";
-            this.打开ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.打开ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.打开ToolStripMenuItem.Text = "打开";
+            this.打开ToolStripMenuItem.Click += new System.EventHandler(this.打开ToolStripMenuItem_Click);
             // 
-            // 保存ToolStripMenuItem
+            // 另存为ToolStripMenuItem
             // 
-            this.保存ToolStripMenuItem.Name = "保存ToolStripMenuItem";
-            this.保存ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
-            this.保存ToolStripMenuItem.Text = "保存";
-            this.保存ToolStripMenuItem.Click += new System.EventHandler(this.保存ToolStripMenuItem_Click);
+            this.另存为ToolStripMenuItem.Name = "另存为ToolStripMenuItem";
+            this.另存为ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.另存为ToolStripMenuItem.Text = "另存为";
+            this.另存为ToolStripMenuItem.Click += new System.EventHandler(this.另存为ToolStripMenuItem_Click);
             // 
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.退出ToolStripMenuItem.Text = "退出";
             // 
             // 编辑ToolStripMenuItem
             // 
             this.编辑ToolStripMenuItem.Name = "编辑ToolStripMenuItem";
-            this.编辑ToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
+            this.编辑ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.编辑ToolStripMenuItem.Text = "编辑";
-            // 
-            // 项目ToolStripMenuItem
-            // 
-            this.项目ToolStripMenuItem.Name = "项目ToolStripMenuItem";
-            this.项目ToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
-            this.项目ToolStripMenuItem.Text = "项目";
             // 
             // 帮助ToolStripMenuItem
             // 
             this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
-            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
+            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.帮助ToolStripMenuItem.Text = "帮助";
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.52663F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 61.2426F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.08284F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.55556F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 61.33333F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.11111F));
             this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.grpCtr, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.grpPro, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.grpWatch, 2, 2);
             this.tableLayoutPanel1.Controls.Add(this.treeView1, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 62.95337F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 2.072539F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 34.71503F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(674, 384);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 63.11688F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 2.077922F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 34.8052F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(790, 430);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.tabWork);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(134, 3);
+            this.panel2.Location = new System.Drawing.Point(157, 3);
             this.panel2.Name = "panel2";
             this.tableLayoutPanel1.SetRowSpan(this.panel2, 3);
-            this.panel2.Size = new System.Drawing.Size(407, 378);
+            this.panel2.Size = new System.Drawing.Size(478, 424);
             this.panel2.TabIndex = 0;
             // 
             // tabWork
             // 
-            this.tabWork.Controls.Add(this.tabPage1);
-            this.tabWork.Controls.Add(this.tabPage2);
             this.tabWork.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabWork.Location = new System.Drawing.Point(0, 0);
             this.tabWork.Name = "tabWork";
             this.tabWork.SelectedIndex = 0;
-            this.tabWork.Size = new System.Drawing.Size(407, 378);
+            this.tabWork.Size = new System.Drawing.Size(478, 424);
             this.tabWork.TabIndex = 0;
             this.tabWork.SelectedIndexChanged += new System.EventHandler(this.tabWork_SelectedIndexChanged);
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 21);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(399, 353);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 21);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(399, 353);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // grpCtr
             // 
             this.grpCtr.Controls.Add(this.flowLayoutPanel1);
             this.grpCtr.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpCtr.Location = new System.Drawing.Point(3, 245);
+            this.grpCtr.Location = new System.Drawing.Point(3, 274);
             this.grpCtr.Name = "grpCtr";
             this.tableLayoutPanel1.SetRowSpan(this.grpCtr, 2);
-            this.grpCtr.Size = new System.Drawing.Size(125, 136);
+            this.grpCtr.Size = new System.Drawing.Size(148, 153);
             this.grpCtr.TabIndex = 1;
             this.grpCtr.TabStop = false;
             this.grpCtr.Text = "控件";
@@ -235,7 +208,7 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(119, 116);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(142, 133);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // ctrLab
@@ -272,10 +245,10 @@
             // 
             this.grpPro.Controls.Add(this.tableLayoutPanel2);
             this.grpPro.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpPro.Location = new System.Drawing.Point(547, 3);
+            this.grpPro.Location = new System.Drawing.Point(641, 3);
             this.grpPro.Name = "grpPro";
             this.tableLayoutPanel1.SetRowSpan(this.grpPro, 2);
-            this.grpPro.Size = new System.Drawing.Size(124, 243);
+            this.grpPro.Size = new System.Drawing.Size(146, 273);
             this.grpPro.TabIndex = 2;
             this.grpPro.TabStop = false;
             this.grpPro.Text = "属性";
@@ -292,7 +265,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.55556F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 88.44444F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(118, 223);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(140, 253);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // cBPro
@@ -301,17 +274,17 @@
             this.cBPro.FormattingEnabled = true;
             this.cBPro.Location = new System.Drawing.Point(3, 3);
             this.cBPro.Name = "cBPro";
-            this.cBPro.Size = new System.Drawing.Size(112, 20);
+            this.cBPro.Size = new System.Drawing.Size(134, 20);
             this.cBPro.TabIndex = 0;
             this.cBPro.SelectedIndexChanged += new System.EventHandler(this.cBPro_SelectedIndexChanged);
             // 
             // propertyGrid1
             // 
             this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid1.Location = new System.Drawing.Point(3, 28);
+            this.propertyGrid1.Location = new System.Drawing.Point(3, 32);
             this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(112, 192);
-            this.propertyGrid1.TabIndex = 3;
+            this.propertyGrid1.Size = new System.Drawing.Size(134, 218);
+            this.propertyGrid1.TabIndex = 0;
             // 
             // grpWatch
             // 
@@ -321,9 +294,9 @@
             this.grpWatch.Controls.Add(this.label2);
             this.grpWatch.Controls.Add(this.label1);
             this.grpWatch.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpWatch.Location = new System.Drawing.Point(547, 252);
+            this.grpWatch.Location = new System.Drawing.Point(641, 282);
             this.grpWatch.Name = "grpWatch";
-            this.grpWatch.Size = new System.Drawing.Size(124, 129);
+            this.grpWatch.Size = new System.Drawing.Size(146, 145);
             this.grpWatch.TabIndex = 3;
             this.grpWatch.TabStop = false;
             this.grpWatch.Text = "监视";
@@ -376,18 +349,33 @@
             // treeView1
             // 
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.ImageIndex = 0;
+            this.treeView1.ImageList = this.imageList1;
             this.treeView1.Location = new System.Drawing.Point(3, 3);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(125, 236);
+            this.treeView1.SelectedImageIndex = 0;
+            this.treeView1.Size = new System.Drawing.Size(148, 265);
             this.treeView1.TabIndex = 4;
+            this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "project_open.ico");
+            this.imageList1.Images.SetKeyName(1, "Folder.ico");
+            this.imageList1.Images.SetKeyName(2, "tab.ico");
+            this.imageList1.Images.SetKeyName(3, "tab_new.ico");
+            this.imageList1.Images.SetKeyName(4, "tab_hide.ico");
+            this.imageList1.Images.SetKeyName(5, "tab_close.ico");
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.tableLayoutPanel1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 24);
+            this.panel1.Location = new System.Drawing.Point(0, 25);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(674, 384);
+            this.panel1.Size = new System.Drawing.Size(790, 455);
             this.panel1.TabIndex = 2;
             // 
             // timer1
@@ -401,26 +389,26 @@
             this.tabRename,
             this.tabDelete});
             this.rightMenu.Name = "rightMenu";
-            this.rightMenu.Size = new System.Drawing.Size(107, 70);
+            this.rightMenu.Size = new System.Drawing.Size(113, 70);
             // 
             // tabClose
             // 
             this.tabClose.Name = "tabClose";
-            this.tabClose.Size = new System.Drawing.Size(106, 22);
+            this.tabClose.Size = new System.Drawing.Size(112, 22);
             this.tabClose.Text = "关闭";
             this.tabClose.Click += new System.EventHandler(this.Close_Click);
             // 
             // tabRename
             // 
             this.tabRename.Name = "tabRename";
-            this.tabRename.Size = new System.Drawing.Size(106, 22);
+            this.tabRename.Size = new System.Drawing.Size(112, 22);
             this.tabRename.Text = "重命名";
             this.tabRename.Click += new System.EventHandler(this.tabRename_Click);
             // 
             // tabDelete
             // 
             this.tabDelete.Name = "tabDelete";
-            this.tabDelete.Size = new System.Drawing.Size(106, 22);
+            this.tabDelete.Size = new System.Drawing.Size(112, 22);
             this.tabDelete.Text = "删除";
             this.tabDelete.Click += new System.EventHandler(this.tabDelete_Click);
             // 
@@ -430,38 +418,59 @@
             this.显示ToolStripMenuItem,
             this.删除ToolStripMenuItem});
             this.hideMenu.Name = "hideMenu";
-            this.hideMenu.Size = new System.Drawing.Size(95, 48);
+            this.hideMenu.Size = new System.Drawing.Size(101, 48);
             // 
             // 显示ToolStripMenuItem
             // 
             this.显示ToolStripMenuItem.Name = "显示ToolStripMenuItem";
-            this.显示ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.显示ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.显示ToolStripMenuItem.Text = "显示";
             this.显示ToolStripMenuItem.Click += new System.EventHandler(this.显示ToolStripMenuItem_Click);
             // 
             // 删除ToolStripMenuItem
             // 
             this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
-            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.删除ToolStripMenuItem.Text = "删除";
             this.删除ToolStripMenuItem.Click += new System.EventHandler(this.删除ToolStripMenuItem_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 458);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(790, 22);
+            this.statusStrip1.TabIndex = 5;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(775, 17);
+            this.toolStripStatusLabel1.Spring = true;
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolStripStatusLabel1.DoubleClick += new System.EventHandler(this.toolStripStatusLabel1_DoubleClick);
+            this.toolStripStatusLabel1.Click += new System.EventHandler(this.toolStripStatusLabel1_DoubleClick);
             // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(674, 408);
+            this.ClientSize = new System.Drawing.Size(790, 480);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "mainForm";
             this.Text = "miniStudio";
             this.Load += new System.EventHandler(this.mainForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mainForm_KeyDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            this.tabWork.ResumeLayout(false);
             this.grpCtr.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.grpPro.ResumeLayout(false);
@@ -471,6 +480,8 @@
             this.panel1.ResumeLayout(false);
             this.rightMenu.ResumeLayout(false);
             this.hideMenu.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -479,20 +490,17 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 文件ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 项目ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 新建ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 打开ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 保存ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 另存为ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 编辑ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 项目ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TabControl tabWork;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.GroupBox grpCtr;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.GroupBox grpPro;
@@ -506,7 +514,6 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.PropertyGrid propertyGrid1;
         private System.Windows.Forms.ComboBox cBPro;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TreeView treeView1;
@@ -517,6 +524,10 @@
         private System.Windows.Forms.ContextMenuStrip hideMenu;
         private System.Windows.Forms.ToolStripMenuItem 显示ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 删除ToolStripMenuItem;
+        private System.Windows.Forms.PropertyGrid propertyGrid1;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ImageList imageList1;
       
     }
 }
