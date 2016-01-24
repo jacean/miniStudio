@@ -179,8 +179,7 @@ namespace miniStudio
         Dictionary<string, TabPage> dictHideTab = new Dictionary<string, TabPage>();
 
         bool MouseIsDown = false;
-  
-
+     
         int[] tempCount = new int[] { 0, 0, 0 };//label\button\grid的默认名字数量后缀
         int tabCount = 1;//标签页数
        
@@ -482,9 +481,14 @@ namespace miniStudio
    
 
         #region tab的事件
+        int click = 0;
+        void tab_MouseClick(object sender, MouseEventArgs e)
+        {
+            label4.Text =click++.ToString();
+        }
         void tab_MouseUp(object sender, MouseEventArgs e)
         {
-            if (tempCtr == null)
+            if (tempCtr == null&&MouseIsDown)
             {
                 Control tab = (Control)sender;
                 tab.Capture = false;
@@ -522,6 +526,7 @@ namespace miniStudio
                 }
                 controlFunc.MouseRect = Rectangle.Empty;
                 MouseIsDown = false;
+           
             }
            
             this.Invalidate();
@@ -594,7 +599,9 @@ namespace miniStudio
                 tab.Cursor = Cursors.Default;
                 //用来判断是否画矩形框
                 if (MouseIsDown)
-                    controlFunc.ResizeToRectangle(e.Location,tab);
+                {
+                    controlFunc.ResizeToRectangle(e.Location, tab);
+                }
             }
         }
 
@@ -756,8 +763,11 @@ namespace miniStudio
                 tab.Paint += new PaintEventHandler(tab_Paint);
                
                 //添加选择矩形选中控件事件
-                tab.MouseUp += new MouseEventHandler(tab_MouseUp);               
+                tab.MouseUp += new MouseEventHandler(tab_MouseUp);
+                tab.MouseClick += new MouseEventHandler(tab_MouseClick); 
         }
+
+       
         private void addButEvents(Button b)
         {
             controlSize cs = new controlSize(this);
@@ -1137,6 +1147,41 @@ namespace miniStudio
                     Process.Start("miniStudio.exe", "open "+e.Node.Name);
                 }
 
+            }
+        }
+
+        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void 复制ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            label5.Text = "复制";
+            copyControl.Clear();
+            foreach (Control c in actFunc.getSelectedList())
+            {
+                copyControl.Add(c.switchTypetoClone());
+            }
+            for (int i = 0; i < copyControl.Count; i++)
+            {
+                copyControl[i].Parent.Controls.Remove(copyControl[i]);
+            }
+        }
+
+        private void 粘贴ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!tabWork.Focus()) { label5.Text = "未能粘贴"; return; }
+            else
+            {
+                actFunc.clearAllSelectState();
+                TabPage t = tabWork.SelectedTab;
+                for (int i = 0; i < copyControl.Count; i++)
+                {
+                    t.Controls.Add(copyControl[i]);
+                    dictControls.Add(copyControl[i], true);
+                }
+                label5.Text = "粘贴成功";
             }
         }
 
